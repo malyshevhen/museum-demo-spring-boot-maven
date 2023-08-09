@@ -10,8 +10,8 @@ import org.springframework.transaction.annotation.Transactional;
 import com.example.services.users.UserService;
 import com.example.services.users.exceptions.UserAlreadyExistsException;
 import com.example.services.users.exceptions.UserNotFoundException;
-import com.example.users.domain.User;
-import com.example.users.repositories.UserRepository;
+import com.example.dao.users.domain.User;
+import com.example.dao.users.repositories.UserRepository;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -57,7 +57,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public User getById(@NotNull @Positive final Long id) {
         return userRepository.findById(id)
-                .orElseThrow(throwNotFoundException(id));
+                .orElseThrow(getUserNotFoundExceptionSupplier(id));
     }
 
     /**
@@ -69,7 +69,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public User save(@NotNull @Valid final User user) {
         userRepository.findByEmail(user.getEmail())
-                .ifPresent(throwAlreadyExistException());
+                .ifPresent(getUserAlreadyExistsExceptionConsumer());
         return userRepository.save(user);
     }
 
@@ -103,13 +103,14 @@ public class UserServiceImpl implements UserService {
         userRepository.deleteById(id);
     }
 
-    private Supplier<UserNotFoundException> throwNotFoundException(
-            final Long id) {
+    private static Supplier<UserNotFoundException> getUserNotFoundExceptionSupplier(Long id) {
         return () -> new UserNotFoundException(
                 String.format("User with ID: %s not found", id));
     }
 
-    private Consumer<? super User> throwAlreadyExistException() {
-        return u -> new UserAlreadyExistsException("User already exists");
+    private static Consumer<? super User> getUserAlreadyExistsExceptionConsumer() {
+        return u -> {
+            throw new UserAlreadyExistsException("User already exists");
+        };
     }
 }

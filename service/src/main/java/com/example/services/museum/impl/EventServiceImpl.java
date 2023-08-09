@@ -1,15 +1,12 @@
-// @formatter:off
-
 package com.example.services.museum.impl;
 
-import java.util.List;
-import java.util.function.Supplier;
+import java.util.List;import java.util.function.Supplier;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.example.museum.domain.Event;
-import com.example.museum.repositories.EventRepository;
+import com.example.dao.museum.domain.Event;
+import com.example.dao.museum.repositories.EventRepository;
 import com.example.services.museum.EventService;
 import com.example.services.museum.exceptions.EventNotFoundException;
 
@@ -51,7 +48,7 @@ public class EventServiceImpl implements EventService {
      */
     public Event getById(final Long id) {
         return eventRepository.findById(id)
-                .orElseThrow(throwNotFoundException(id));
+                .orElseThrow(getEventNotFoundExceptionSupplier(id));
     }
 
     /**
@@ -81,8 +78,7 @@ public class EventServiceImpl implements EventService {
         eventRepository.delete(event);
     }
 
-    private Supplier<EventNotFoundException> throwNotFoundException(
-            final Long id) {
+    private static Supplier<EventNotFoundException> getEventNotFoundExceptionSupplier(Long id) {
         return () -> new EventNotFoundException(
                 String.format("Event not found with ID: %s", id));
     }

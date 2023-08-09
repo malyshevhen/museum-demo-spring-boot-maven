@@ -2,12 +2,15 @@ package com.example.services.museum.impl;
 
 import java.util.List;
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 
+import com.example.services.museum.exceptions.AuthorAlreadyExistException;
+import com.example.services.museum.exceptions.AuthorNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.example.museum.domain.Author;
-import com.example.museum.repositories.AuthorRepository;
+import com.example.dao.museum.domain.Author;
+import com.example.dao.museum.repositories.AuthorRepository;
 import com.example.services.museum.AuthorService;
 
 import jakarta.validation.Valid;
@@ -48,7 +51,7 @@ public class AuthorServiceImpl implements AuthorService {
     @Override
     public Author getById(@NotNull @Positive final Long id) {
         return authorRepository.findById(id)
-                .orElseThrow();
+                .orElseThrow(getAuthorNotFoundExceptionSupplier(id));
     }
 
     /**
@@ -56,12 +59,12 @@ public class AuthorServiceImpl implements AuthorService {
      *
      * @param author The Author object containing the details of the new author.
      * @return The created Author object.
-     * @throws IllegalArgumentException if Author with given users ID id exists.
+     * @throws AuthorAlreadyExistException if Author with given users ID already exists.
      */
     @Override
     public Author save(@NotNull @Valid final Author author) {
         authorRepository.findByUserId(author.getUser().getId())
-                .ifPresent(throwAlreadyExists());
+                .ifPresent(getAuthorAlreadyExistExceptionConsumer());
         return authorRepository.save(author);
     }
 
@@ -93,7 +96,14 @@ public class AuthorServiceImpl implements AuthorService {
         authorRepository.delete(existingAuthor);
     }
 
-    private Consumer<? super Author> throwAlreadyExists() {
-        return u -> new IllegalArgumentException("Author already exists");
+    private static Consumer<? super Author> getAuthorAlreadyExistExceptionConsumer() {
+        return u -> {
+            throw new AuthorAlreadyExistException("Author already exists");
+        };
+    }
+
+    private static Supplier<AuthorNotFoundException> getAuthorNotFoundExceptionSupplier(Long id) {
+        return () -> new AuthorNotFoundException(
+                String.format("Author with ID: %s not found", id));
     }
 }

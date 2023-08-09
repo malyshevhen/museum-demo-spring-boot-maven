@@ -1,5 +1,6 @@
 {
     "java.configuration.updateBuildConfiguration": "automatic",
     "java.compile.nullAnalysis.mode": "automatic",
-    "java.checkstyle.configuration": "/sun_checks.xml"
+    "java.checkstyle.configuration": "/sun_checks.xml",
+    "commentTranslate.targetLanguage": "uk"
 }

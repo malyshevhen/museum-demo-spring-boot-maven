@@ -2,7 +2,7 @@ package com.example.services.museum;
 
 import java.util.List;
 
-import com.example.museum.domain.Article;
+import com.example.dao.museum.domain.Article;
 
 /**
  * Service interface for managing museum articles.

@@ -2,7 +2,7 @@ package com.example.services.users;
 
 import java.util.List;
 
-import com.example.users.domain.User;
+import com.example.dao.users.domain.User;
 
 /**
  * Service interface for handling operations related to users.

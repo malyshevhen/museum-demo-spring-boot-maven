@@ -22,7 +22,7 @@
     </properties>
 
     <modules>
-        <module>api</module>
+        <module>web</module>
         <module>service</module>
         <module>dao</module>
     </modules>

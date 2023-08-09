@@ -2,7 +2,7 @@ package com.example.services.museum;
 
 import java.util.List;
 
-import com.example.museum.domain.Event;
+import com.example.dao.museum.domain.Event;
 
 /**
  * Service interface for managing museum events.

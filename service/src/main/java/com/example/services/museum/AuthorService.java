@@ -1,6 +1,6 @@
 package com.example.services.museum;
 
-import com.example.museum.domain.Author;
+import com.example.dao.museum.domain.Author;
 
 import java.util.List;
 

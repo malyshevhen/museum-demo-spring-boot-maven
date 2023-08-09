@@ -1,22 +1,18 @@
-// @formatter:off
-
 package com.example.services.museum.impl;
 
-import java.util.List;
-import java.util.function.Supplier;
-
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import com.example.museum.domain.Article;
-import com.example.museum.repositories.ArticleRepository;
+import com.example.dao.museum.domain.Article;
+import com.example.dao.museum.repositories.ArticleRepository;
 import com.example.services.museum.ArticleService;
 import com.example.services.museum.exceptions.ArticleNotFoundException;
-
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.function.Supplier;
 
 /**
  * Service implementation for managing museum articles.
@@ -52,13 +48,7 @@ public class ArticleServiceImpl implements ArticleService {
     @Override
     public Article getById(@NotNull @Positive final Long id) {
         return articleRepository.findById(id)
-                .orElseThrow(throwNotFoundException(id));
-    }
-
-    private Supplier<ArticleNotFoundException> throwNotFoundException(
-            final Long id) {
-        return () -> new ArticleNotFoundException(
-            String.format("Article with ID: %d not found.", id));
+                .orElseThrow(getArticleNotFoundExceptionSupplier(id));
     }
 
     /**
@@ -87,7 +77,7 @@ public class ArticleServiceImpl implements ArticleService {
     @Override
     public Article update(@NotNull @Valid final Article article) {
         if (article.getId() == null) {
-            throw new IllegalArgumentException("Invalid article data or ID.");
+            throw new IllegalArgumentException("Invalid article ID.");
         }
         return articleRepository.save(article);
     }
@@ -101,5 +91,10 @@ public class ArticleServiceImpl implements ArticleService {
     public void deleteById(@NotNull @Positive final Long id) {
         var existingArticle = getById(id);
         articleRepository.delete(existingArticle);
+    }
+
+    private static Supplier<ArticleNotFoundException> getArticleNotFoundExceptionSupplier(Long id) {
+        return () -> new ArticleNotFoundException(
+                String.format("Article with ID: %d not found.", id));
     }
 }
