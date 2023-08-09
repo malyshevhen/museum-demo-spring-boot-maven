@@ -1,16 +1,15 @@
 package com.example.services.museum.impl;
 
-import java.util.List;import java.util.function.Supplier;
-
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.example.dao.museum.domain.Event;
 import com.example.dao.museum.repositories.EventRepository;
 import com.example.services.museum.EventService;
 import com.example.services.museum.exceptions.EventNotFoundException;
-
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.function.Supplier;
 
 /**
  * Service class for managing museum events.
@@ -28,6 +27,11 @@ public class EventServiceImpl implements EventService {
      * JPA repository for managing Event entities in DB.
      */
     private final EventRepository eventRepository;
+
+    private static Supplier<EventNotFoundException> getEventNotFoundExceptionSupplier(Long id) {
+        return () -> new EventNotFoundException(
+                String.format("Event not found with ID: %s", id));
+    }
 
     /**
      * Get a list of all events.
@@ -76,10 +80,5 @@ public class EventServiceImpl implements EventService {
     public void deleteById(final Long id) {
         var event = getById(id);
         eventRepository.delete(event);
-    }
-
-    private static Supplier<EventNotFoundException> getEventNotFoundExceptionSupplier(Long id) {
-        return () -> new EventNotFoundException(
-                String.format("Event not found with ID: %s", id));
     }
 }

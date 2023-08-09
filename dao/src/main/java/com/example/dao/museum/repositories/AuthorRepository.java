@@ -1,11 +1,10 @@
 package com.example.dao.museum.repositories;
 
 import com.example.dao.museum.domain.Author;
-
-import java.util.Optional;
-
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+
+import java.util.Optional;
 
 /**
  * @author Evhen Malysh

@@ -1,8 +1,8 @@
 package com.example.services.users;
 
-import java.util.List;
-
 import com.example.dao.users.domain.User;
+
+import java.util.List;
 
 /**
  * Service interface for handling operations related to users.
@@ -21,7 +21,7 @@ public interface UserService {
      *
      * @param id The ID of the user to retrieve.
      * @return The User object representing the requested user,
-     *         or null if not found.
+     * or null if not found.
      */
     User getById(Long id);
 

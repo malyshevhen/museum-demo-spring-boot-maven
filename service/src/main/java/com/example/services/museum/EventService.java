@@ -1,8 +1,9 @@
 package com.example.services.museum;
 
-import java.util.List;
-
 import com.example.dao.museum.domain.Event;
+import com.example.services.museum.exceptions.EventNotFoundException;
+
+import java.util.List;
 
 /**
  * Service interface for managing museum events.
@@ -21,10 +22,10 @@ public interface EventService {
     /**
      * Get a specific event by its ID.
      *
-     * @param id    The ID of the event.
-     * @return      The event with the given ID.
-     * @throws      EventNotFoundException if the event with the given
-     *              ID is not found.
+     * @param id The ID of the event.
+     * @return The event with the given ID.
+     * @throws EventNotFoundException if the event with the given
+     *                                ID is not found.
      */
     Event getById(Long id);
 

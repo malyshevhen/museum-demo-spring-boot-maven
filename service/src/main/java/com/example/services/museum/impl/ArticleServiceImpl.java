@@ -29,6 +29,11 @@ public class ArticleServiceImpl implements ArticleService {
      */
     private final ArticleRepository articleRepository;
 
+    private static Supplier<ArticleNotFoundException> getArticleNotFoundExceptionSupplier(Long id) {
+        return () -> new ArticleNotFoundException(
+                String.format("Article with ID: %d not found.", id));
+    }
+
     /**
      * Get a list of all articles.
      *
@@ -91,10 +96,5 @@ public class ArticleServiceImpl implements ArticleService {
     public void deleteById(@NotNull @Positive final Long id) {
         var existingArticle = getById(id);
         articleRepository.delete(existingArticle);
-    }
-
-    private static Supplier<ArticleNotFoundException> getArticleNotFoundExceptionSupplier(Long id) {
-        return () -> new ArticleNotFoundException(
-                String.format("Article with ID: %d not found.", id));
     }
 }

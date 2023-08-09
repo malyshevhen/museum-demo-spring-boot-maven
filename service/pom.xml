@@ -65,24 +65,24 @@
                             <goal>report</goal>
                         </goals>
                     </execution>
-<!--                    <execution>-->
-<!--                        <id>default-check</id>-->
-<!--                        <goals>-->
-<!--                            <goal>check</goal>-->
-<!--                        </goals>-->
-<!--                        <configuration>-->
-<!--                            <rules>-->
-<!--                                <rule>-->
-<!--                                    <limits>-->
-<!--                                        <limit>-->
-<!--                                            <counter>INSTRUCTION</counter>-->
-<!--                                            <minimum>80.0%</minimum>-->
-<!--                                        </limit>-->
-<!--                                    </limits>-->
-<!--                                </rule>-->
-<!--                            </rules>-->
-<!--                        </configuration>-->
-<!--                    </execution>-->
+                    <!--                    <execution>-->
+                    <!--                        <id>default-check</id>-->
+                    <!--                        <goals>-->
+                    <!--                            <goal>check</goal>-->
+                    <!--                        </goals>-->
+                    <!--                        <configuration>-->
+                    <!--                            <rules>-->
+                    <!--                                <rule>-->
+                    <!--                                    <limits>-->
+                    <!--                                        <limit>-->
+                    <!--                                            <counter>INSTRUCTION</counter>-->
+                    <!--                                            <minimum>80.0%</minimum>-->
+                    <!--                                        </limit>-->
+                    <!--                                    </limits>-->
+                    <!--                                </rule>-->
+                    <!--                            </rules>-->
+                    <!--                        </configuration>-->
+                    <!--                    </execution>-->
                 </executions>
             </plugin>
         </plugins>

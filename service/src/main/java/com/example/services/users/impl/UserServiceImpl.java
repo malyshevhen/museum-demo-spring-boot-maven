@@ -1,22 +1,20 @@
 package com.example.services.users.impl;
 
-import java.util.List;
-import java.util.function.Consumer;
-import java.util.function.Supplier;
-
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
+import com.example.dao.users.domain.User;
+import com.example.dao.users.repositories.UserRepository;
 import com.example.services.users.UserService;
 import com.example.services.users.exceptions.UserAlreadyExistsException;
 import com.example.services.users.exceptions.UserNotFoundException;
-import com.example.dao.users.domain.User;
-import com.example.dao.users.repositories.UserRepository;
-
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 /**
  * Implementation of the UserService interface.
@@ -32,6 +30,17 @@ public class UserServiceImpl implements UserService {
      *
      */
     private final UserRepository userRepository;
+
+    private static Supplier<UserNotFoundException> getUserNotFoundExceptionSupplier(Long id) {
+        return () -> new UserNotFoundException(
+                String.format("User with ID: %s not found", id));
+    }
+
+    private static Consumer<? super User> getUserAlreadyExistsExceptionConsumer() {
+        return u -> {
+            throw new UserAlreadyExistsException("User already exists");
+        };
+    }
 
     /**
      * Get a list of all users.
@@ -52,7 +61,7 @@ public class UserServiceImpl implements UserService {
      *
      * @param id The ID of the user to retrieve.
      * @return The User object representing the requested user,
-     *         or null if not found.
+     * or null if not found.
      */
     @Override
     public User getById(@NotNull @Positive final Long id) {
@@ -101,16 +110,5 @@ public class UserServiceImpl implements UserService {
     @Override
     public void deleteById(@NotNull @Positive final Long id) {
         userRepository.deleteById(id);
-    }
-
-    private static Supplier<UserNotFoundException> getUserNotFoundExceptionSupplier(Long id) {
-        return () -> new UserNotFoundException(
-                String.format("User with ID: %s not found", id));
-    }
-
-    private static Consumer<? super User> getUserAlreadyExistsExceptionConsumer() {
-        return u -> {
-            throw new UserAlreadyExistsException("User already exists");
-        };
     }
 }
