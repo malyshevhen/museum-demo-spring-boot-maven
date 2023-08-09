@@ -25,7 +25,9 @@
     <modules>
         <module>web</module>
         <module>service</module>
-        <module>dao</module>
+        <module>domain</module>
+        <module>repository</module>
+        <module>dto</module>
     </modules>
 
     <dependencies>
@@ -91,7 +93,17 @@
             </dependency>
             <dependency>
                 <groupId>com.example</groupId>
-                <artifactId>dao</artifactId>
+                <artifactId>domain</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.example</groupId>
+                <artifactId>repository</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.example</groupId>
+                <artifactId>dto</artifactId>
                 <version>${project.version}</version>
             </dependency>
         </dependencies>

@@ -1,7 +1,7 @@
 package com.example.services.museum.impl;
 
-import com.example.dao.museum.domain.Author;
-import com.example.dao.museum.repositories.AuthorRepository;
+import com.example.domain.museum.Author;
+import com.example.repositories.museum.AuthorRepository;
 import com.example.services.museum.AuthorService;
 import com.example.services.museum.exceptions.AuthorAlreadyExistException;
 import com.example.services.museum.exceptions.AuthorNotFoundException;

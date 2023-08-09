@@ -1,7 +1,7 @@
 package com.example.services.museum.impl;
 
-import com.example.dao.museum.domain.Article;
-import com.example.dao.museum.repositories.ArticleRepository;
+import com.example.domain.museum.Article;
+import com.example.repositories.museum.ArticleRepository;
 import com.example.services.museum.ArticleService;
 import com.example.services.museum.exceptions.ArticleNotFoundException;
 import jakarta.validation.Valid;

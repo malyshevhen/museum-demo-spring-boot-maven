@@ -1,7 +1,7 @@
 package com.example.services.museum.impl;
 
-import com.example.dao.museum.domain.Event;
-import com.example.dao.museum.repositories.EventRepository;
+import com.example.domain.museum.Event;
+import com.example.repositories.museum.EventRepository;
 import com.example.services.museum.EventService;
 import com.example.services.museum.exceptions.EventNotFoundException;
 import lombok.RequiredArgsConstructor;

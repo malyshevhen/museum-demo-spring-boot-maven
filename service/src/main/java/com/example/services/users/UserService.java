@@ -1,6 +1,6 @@
 package com.example.services.users;
 
-import com.example.dao.users.domain.User;
+import com.example.domain.users.User;
 
 import java.util.List;
 

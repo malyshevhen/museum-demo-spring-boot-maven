@@ -1,6 +1,6 @@
 package com.example.services.museum;
 
-import com.example.dao.museum.domain.Article;
+import com.example.domain.museum.Article;
 
 import java.util.List;
 

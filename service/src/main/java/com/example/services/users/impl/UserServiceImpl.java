@@ -1,7 +1,7 @@
 package com.example.services.users.impl;
 
-import com.example.dao.users.domain.User;
-import com.example.dao.users.repositories.UserRepository;
+import com.example.domain.users.User;
+import com.example.repositories.users.UserRepository;
 import com.example.services.users.UserService;
 import com.example.services.users.exceptions.UserAlreadyExistsException;
 import com.example.services.users.exceptions.UserNotFoundException;

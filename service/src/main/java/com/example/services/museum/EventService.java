@@ -1,6 +1,6 @@
 package com.example.services.museum;
 
-import com.example.dao.museum.domain.Event;
+import com.example.domain.museum.Event;
 import com.example.services.museum.exceptions.EventNotFoundException;
 
 import java.util.List;

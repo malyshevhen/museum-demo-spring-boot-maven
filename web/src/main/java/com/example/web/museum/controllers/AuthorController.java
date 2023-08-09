@@ -1,6 +1,6 @@
 package com.example.web.museum.controllers;
 
-import com.example.dao.museum.domain.Author;
+import com.example.domain.museum.Author;
 import com.example.services.museum.AuthorService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;

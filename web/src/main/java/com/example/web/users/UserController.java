@@ -1,7 +1,7 @@
 package com.example.web.users;
 
 
-import com.example.dao.users.domain.User;
+import com.example.domain.users.User;
 import com.example.services.users.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;

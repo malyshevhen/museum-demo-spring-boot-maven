@@ -7,15 +7,19 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="repository" />
         <module name="web" />
         <module name="service" />
-        <module name="dao" />
+        <module name="dto" />
+        <module name="domain" />
       </profile>
     </annotationProcessing>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
-      <module name="dao" options="-parameters" />
+      <module name="domain" options="-parameters" />
+      <module name="dto" options="-parameters" />
+      <module name="repository" options="-parameters" />
       <module name="service" options="-parameters" />
       <module name="web" options="-parameters" />
     </option>
