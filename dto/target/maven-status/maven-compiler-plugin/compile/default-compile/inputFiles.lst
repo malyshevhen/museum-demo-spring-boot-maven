@@ -1,0 +1,11 @@
+/home/evhen/Documents/GitHub/museum-demo-spring-boot-maven-modular/dto/src/main/java/com/example/dto/museum/article/ArticleWithBody.java
+/home/evhen/Documents/GitHub/museum-demo-spring-boot-maven-modular/dto/src/main/java/com/example/dto/museum/author/AuthorWithEvents.java
+/home/evhen/Documents/GitHub/museum-demo-spring-boot-maven-modular/dto/src/main/java/com/example/dto/museum/event/EventWithoutBody.java
+/home/evhen/Documents/GitHub/museum-demo-spring-boot-maven-modular/dto/src/main/java/com/example/dto/users/UserRegistrationForm.java
+/home/evhen/Documents/GitHub/museum-demo-spring-boot-maven-modular/dto/src/main/java/com/example/dto/museum/article/ArticleWithoutBody.java
+/home/evhen/Documents/GitHub/museum-demo-spring-boot-maven-modular/dto/src/main/java/com/example/dto/museum/author/AuthorWithArticles.java
+/home/evhen/Documents/GitHub/museum-demo-spring-boot-maven-modular/dto/src/main/java/com/example/dto/museum/article/ArticlePublishingForm.java
+/home/evhen/Documents/GitHub/museum-demo-spring-boot-maven-modular/dto/src/main/java/com/example/dto/museum/author/AuthorRegistrationForm.java
+/home/evhen/Documents/GitHub/museum-demo-spring-boot-maven-modular/dto/src/main/java/com/example/dto/museum/event/EventWithBody.java
+/home/evhen/Documents/GitHub/museum-demo-spring-boot-maven-modular/dto/src/main/java/com/example/dto/museum/event/EventPublishingForm.java
+/home/evhen/Documents/GitHub/museum-demo-spring-boot-maven-modular/dto/src/main/java/com/example/dto/museum/author/AuthorShortResponse.java
