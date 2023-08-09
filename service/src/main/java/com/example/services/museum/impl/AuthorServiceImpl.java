@@ -1,22 +1,20 @@
 package com.example.services.museum.impl;
 
-import java.util.List;
-import java.util.function.Consumer;
-import java.util.function.Supplier;
-
-import com.example.services.museum.exceptions.AuthorAlreadyExistException;
-import com.example.services.museum.exceptions.AuthorNotFoundException;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.example.dao.museum.domain.Author;
 import com.example.dao.museum.repositories.AuthorRepository;
 import com.example.services.museum.AuthorService;
-
+import com.example.services.museum.exceptions.AuthorAlreadyExistException;
+import com.example.services.museum.exceptions.AuthorNotFoundException;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 /**
  * Implementation of the AuthorService interface.
@@ -30,6 +28,17 @@ public class AuthorServiceImpl implements AuthorService {
      *
      */
     private final AuthorRepository authorRepository;
+
+    private static Consumer<? super Author> getAuthorAlreadyExistExceptionConsumer() {
+        return u -> {
+            throw new AuthorAlreadyExistException("Author already exists");
+        };
+    }
+
+    private static Supplier<AuthorNotFoundException> getAuthorNotFoundExceptionSupplier(Long id) {
+        return () -> new AuthorNotFoundException(
+                String.format("Author with ID: %s not found", id));
+    }
 
     /**
      * Get a list of all authors.
@@ -46,7 +55,7 @@ public class AuthorServiceImpl implements AuthorService {
      *
      * @param id The ID of the author to retrieve.
      * @return The Author object representing the requested author,
-     *         or null if not found.
+     * or null if not found.
      */
     @Override
     public Author getById(@NotNull @Positive final Long id) {
@@ -94,16 +103,5 @@ public class AuthorServiceImpl implements AuthorService {
     public void deleteById(@NotNull @Positive final Long id) {
         var existingAuthor = getById(id);
         authorRepository.delete(existingAuthor);
-    }
-
-    private static Consumer<? super Author> getAuthorAlreadyExistExceptionConsumer() {
-        return u -> {
-            throw new AuthorAlreadyExistException("Author already exists");
-        };
-    }
-
-    private static Supplier<AuthorNotFoundException> getAuthorNotFoundExceptionSupplier(Long id) {
-        return () -> new AuthorNotFoundException(
-                String.format("Author with ID: %s not found", id));
     }
 }

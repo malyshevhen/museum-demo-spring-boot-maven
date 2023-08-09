@@ -25,7 +25,7 @@ import java.util.Set;
         indexes = {@Index(name = "idx_author_username", columnList = "username")},
         uniqueConstraints = {
                 @UniqueConstraint(name = "uc_author_user_id", columnNames = {"user_id"})
-})
+        })
 @NoArgsConstructor
 @Getter
 @Setter

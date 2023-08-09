@@ -1,11 +1,10 @@
 package com.example.dao.users.repositories;
 
 import com.example.dao.users.domain.User;
-
-import java.util.Optional;
-
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+
+import java.util.Optional;
 
 /**
  * @author Evhen Malysh
