@@ -13,6 +13,6 @@ import java.util.Set;
  */
 public record ArticlePublishingForm(@NotNull @NotBlank String title,
                                     @NotNull @NotBlank String body,
-                                    Set<Article.WebArticleTag> tags,
+                                    Set<Article.ArticleTag> tags,
                                     @NotNull @Positive Long authorId) implements Serializable {
 }

@@ -24,7 +24,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
                         email = "email@example.com")
         )
 )
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = "com.example.*")
 @ComponentScan(basePackages = "com.example.*")
 @EntityScan(basePackages = "com.example.*")
 @EnableJpaRepositories(basePackages = "com.example.*")

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xmlns="http://maven.apache.org/POM/4.0.0"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    xmlns="http://maven.apache.org/POM/4.0.0"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
@@ -12,16 +12,10 @@
 
     <artifactId>web</artifactId>
     <version>${project.parent.version}</version>
-    <name>api</name>
+    <name>web</name>
     <description>Demo project for Spring Boot</description>
 
     <dependencies>
-
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-actuator</artifactId>
-        </dependency>
-
         <dependency>
             <groupId>com.example</groupId>
             <artifactId>dao</artifactId>
@@ -29,26 +23,6 @@
         <dependency>
             <groupId>com.example</groupId>
             <artifactId>service</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springdoc</groupId>
-            <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
-            <version>2.1.0</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <optional>true</optional>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
         </dependency>
     </dependencies>
 
@@ -87,24 +61,6 @@
                             <goal>report</goal>
                         </goals>
                     </execution>
-                    <!--                    <execution>-->
-                    <!--                        <id>default-check</id>-->
-                    <!--                        <goals>-->
-                    <!--                            <goal>check</goal>-->
-                    <!--                        </goals>-->
-                    <!--                        <configuration>-->
-                    <!--                            <rules>-->
-                    <!--                                <rule>-->
-                    <!--                                    <limits>-->
-                    <!--                                        <limit>-->
-                    <!--                                            <counter>INSTRUCTION</counter>-->
-                    <!--                                            <minimum>80.0%</minimum>-->
-                    <!--                                        </limit>-->
-                    <!--                                    </limits>-->
-                    <!--                                </rule>-->
-                    <!--                            </rules>-->
-                    <!--                        </configuration>-->
-                    <!--                    </execution>-->
                 </executions>
             </plugin>
             <plugin>

@@ -15,7 +15,7 @@ import java.util.Set;
 public record ArticleWithBody(@NotNull @Positive Long id,
                               @NotNull @NotBlank String title,
                               @NotNull @NotBlank String body,
-                              Set<Article.WebArticleTag> tags,
+                              Set<Article.ArticleTag> tags,
                               @NotNull @Positive Long authorId,
                               @NotNull @NotBlank String authorUsername,
                               @NotNull LocalDateTime createdAt) implements Serializable {

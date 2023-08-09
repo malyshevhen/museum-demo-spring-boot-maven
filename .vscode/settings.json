@@ -2,5 +2,17 @@
     "java.configuration.updateBuildConfiguration": "automatic",
     "java.compile.nullAnalysis.mode": "automatic",
     "java.checkstyle.configuration": "/sun_checks.xml",
-    "commentTranslate.targetLanguage": "uk"
+    "commentTranslate.targetLanguage": "uk",
+    "sqltools.connections": [
+        {
+            "previewLimit": 50,
+            "server": "localhost",
+            "port": 5432,
+            "driver": "PostgreSQL",
+            "name": "museum_db",
+            "database": "museum_db",
+            "username": "postgres",
+            "password": "password"
+        }
+    ]
 }

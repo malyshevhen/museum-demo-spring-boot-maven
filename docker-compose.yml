@@ -1,0 +1,12 @@
+version: '3'
+
+services:
+  postgres:
+    image: postgres:15.2-alpine
+    ports:
+      - '5432:5432'
+    environment:
+      POSTGRES_DB: museum_db
+      POSTGRES_USER: ${PRODUCTS_DATASOURCE_USERNAME:-postgres}
+      POSTGRES_PASSWORD: ${PRODUCTS_DATASOURCE_PASSWORD:-password}
+    restart: on-failure

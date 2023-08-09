@@ -4,6 +4,13 @@
             "type": "java",
             "name": "ApiApplication",
             "request": "launch",
+            "mainClass": "com.example.web.ApiApplication",
+            "projectName": "web"
+        },
+        {
+            "type": "java",
+            "name": "ApiApplication",
+            "request": "launch",
             "mainClass": "com.example.ApiApplication",
             "projectName": "api"
         },

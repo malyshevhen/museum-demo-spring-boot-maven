@@ -22,7 +22,6 @@ import java.util.Set;
 @Table(name = "articles", indexes = {
         @Index(name = "idx_article_title", columnList = "title"),
         @Index(name = "idx_article_author_id", columnList = "author_id"),
-        @Index(name = "idx_article_tags", columnList = "tags")
 })
 @RequiredArgsConstructor
 @Getter
@@ -60,9 +59,10 @@ public class Article {
      * Collection of #tags related to the article.
      */
     @Setter(AccessLevel.PRIVATE)
-    @ElementCollection
+    @ElementCollection(targetClass = ArticleTag.class)
+    @CollectionTable(name = "article_tags")
     @Enumerated(EnumType.STRING)
-    private Set<WebArticleTag> tags = new LinkedHashSet<>();
+    private Set<ArticleTag> tags = new LinkedHashSet<>();
 
     /**
      * Author of the article.
@@ -91,7 +91,7 @@ public class Article {
      */
     public Article(final @NotNull @NotBlank String articleTitle,
                    final @NotNull @NotBlank String articleBody,
-                   final Set<WebArticleTag> articleTags,
+                   final Set<ArticleTag> articleTags,
                    final Author articleAuthor) {
         this.title = articleTitle;
         this.body = articleBody;
@@ -146,36 +146,48 @@ public class Article {
      *
      * @author Evhen Malysh
      */
-    public enum WebArticleTag {
+    @Getter
+    public enum ArticleTag {
 
         /**
          * Tag for articles related to art history and cultural heritage.
          */
-        ART_HISTORY,
+        ART_HISTORY("Art history"),
 
         /**
          * Tag for articles about current exhibitions and displays.
          */
-        EXHIBITIONS,
+        EXHIBITIONS("Exhibitions"),
 
         /**
          * Tag for articles discussing museum events and workshops.
          */
-        EVENTS,
+        EVENTS("Events"),
 
         /**
          * Tag for articles focusing on archaeological discoveries.
          */
-        ARCHAEOLOGY,
+        ARCHAEOLOGY("Archaeology"),
 
         /**
          * Tag for articles featuring interviews with artists and curators.
          */
-        INTERVIEWS,
+        INTERVIEWS("Interviews"),
 
         /**
          * Tag for articles exploring behind-the-scenes aspects of the museum.
          */
-        BEHIND_THE_SCENES
+        BEHIND_THE_SCENES("Behind the scenes");
+
+        private final String displayName;
+
+        /**
+         * Constructor for ArticleTag enum.
+         *
+         * @param displayName The display name of the tag.
+         */
+        ArticleTag(String displayName) {
+            this.displayName = displayName;
+        }
     }
 }
