@@ -18,15 +18,11 @@
     <dependencies>
         <dependency>
             <groupId>com.example</groupId>
-            <artifactId>domain</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.example</groupId>
             <artifactId>service</artifactId>
         </dependency>
         <dependency>
             <groupId>com.example</groupId>
-            <artifactId>dto</artifactId>
+            <artifactId>libraries</artifactId>
         </dependency>
     </dependencies>
 

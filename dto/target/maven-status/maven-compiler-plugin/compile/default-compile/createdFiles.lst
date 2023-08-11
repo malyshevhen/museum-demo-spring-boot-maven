@@ -1,11 +1,10 @@
-com/example/dto/museum/author/AuthorWithArticles.class
 com/example/dto/museum/event/EventWithBody.class
+com/example/dto/users/UserShortResponse.class
 com/example/dto/museum/article/ArticlePublishingForm.class
 com/example/dto/museum/event/EventPublishingForm.class
 com/example/dto/museum/author/AuthorRegistrationForm.class
 com/example/dto/users/UserRegistrationForm.class
 com/example/dto/museum/article/ArticleWithBody.class
-com/example/dto/museum/author/AuthorWithEvents.class
 com/example/dto/museum/event/EventWithoutBody.class
 com/example/dto/museum/article/ArticleWithoutBody.class
 com/example/dto/museum/author/AuthorShortResponse.class

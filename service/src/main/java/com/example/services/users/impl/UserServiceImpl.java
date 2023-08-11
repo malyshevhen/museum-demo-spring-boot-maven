@@ -1,6 +1,9 @@
 package com.example.services.users.impl;
 
+import com.example.domain.users.Address;
 import com.example.domain.users.User;
+import com.example.dto.users.UserRegistrationForm;
+import com.example.dto.users.UserShortResponse;
 import com.example.repositories.users.UserRepository;
 import com.example.services.users.UserService;
 import com.example.services.users.exceptions.UserAlreadyExistsException;
@@ -11,9 +14,9 @@ import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.annotation.Validated;
 
 import java.util.List;
-import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 /**
@@ -22,10 +25,13 @@ import java.util.function.Supplier;
  * @author Evhen Malysh
  */
 @Service
+@Validated
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
+    public static final String USER_WITH_EMAIL_ALREADY_EXIST = "User with email: %s already exist.";
+    public static final String USER_WITH_ID_NOT_FOUND = "User with ID: %d not found";
     /**
      *
      */
@@ -33,13 +39,7 @@ public class UserServiceImpl implements UserService {
 
     private static Supplier<UserNotFoundException> getUserNotFoundExceptionSupplier(Long id) {
         return () -> new UserNotFoundException(
-                String.format("User with ID: %s not found", id));
-    }
-
-    private static Consumer<? super User> getUserAlreadyExistsExceptionConsumer() {
-        return u -> {
-            throw new UserAlreadyExistsException("User already exists");
-        };
+                String.format(USER_WITH_ID_NOT_FOUND, id));
     }
 
     /**
@@ -48,8 +48,8 @@ public class UserServiceImpl implements UserService {
      * @return List of User objects representing all users.
      */
     @Override
-    public List<User> getAll() {
-        var allUsers = userRepository.findAll();
+    public List<UserShortResponse> getAll() {
+        var allUsers = userRepository.findAllDtos();
         if (allUsers.isEmpty()) {
             throw new UserNotFoundException("No users found");
         }
@@ -60,46 +60,64 @@ public class UserServiceImpl implements UserService {
      * Get a specific user by ID.
      *
      * @param id The ID of the user to retrieve.
-     * @return The User object representing the requested user,
-     * or null if not found.
+     * @return UserShortResponse representing the requested user.
      */
     @Override
-    public User getById(@NotNull @Positive final Long id) {
-        return userRepository.findById(id)
+    public UserShortResponse getById(@NotNull @Positive final Long id) {
+        return userRepository.findDtoById(id)
                 .orElseThrow(getUserNotFoundExceptionSupplier(id));
     }
 
     /**
      * Create a new user.
      *
-     * @param user The User object containing the details of the new user.
-     * @return The created User object.
+     * @param registrationForm The form containing the details of the new user.
+     * @return The created user.
      */
     @Override
-    public User save(@NotNull @Valid final User user) {
-        userRepository.findByEmail(user.getEmail())
-                .ifPresent(getUserAlreadyExistsExceptionConsumer());
-        return userRepository.save(user);
+    @Transactional
+    public UserShortResponse save(
+            @NotNull @Valid final UserRegistrationForm registrationForm) {
+        var email = registrationForm.email();
+        if (isPresent(email)) {
+            throw new UserAlreadyExistsException(
+                    String.format(USER_WITH_EMAIL_ALREADY_EXIST, email));
+        }
+        var userAddress = new Address(
+                registrationForm.addressCity(),
+                registrationForm.addressStreet(),
+                registrationForm.addressNumber(),
+                registrationForm.addressApartment(),
+                registrationForm.addressZip()
+        );
+        var userToSave = new User(
+                registrationForm.firstName(),
+                registrationForm.lastName(),
+                registrationForm.email(),
+                registrationForm.password(),
+                userAddress
+        );
+        var savedUserId = userRepository.save(userToSave).getId();
+        return getById(savedUserId);
     }
 
     /**
-     * Update an existing user.
+     * Update an existing user`s address.
      *
      * @param id   The ID of the user to update.
-     * @param user The User object containing the updated details.
-     * @return The updated User object, or null if user not found.
+     * @param address The user`s address to update.
+     * @return The updated user.
      */
     @Override
-    public User update(
+    @Transactional
+    public UserShortResponse updateAddress(
             @NotNull @Positive final Long id,
-            @NotNull @Valid final User user) {
-        var existingUser = getById(id);
-        existingUser.setFirstName(user.getFirstName());
-        existingUser.setLastName(user.getLastName());
-        existingUser.setEmail(user.getEmail());
-        existingUser.setAddress(user.getAddress());
-
-        return userRepository.save(existingUser);
+            @NotNull @Valid final Address address) {
+        var existingUser = userRepository.findById(id)
+                .orElseThrow(getUserNotFoundExceptionSupplier(id));
+        existingUser.setAddress(address);
+        userRepository.save(existingUser);
+        return getById(id);
     }
 
     /**
@@ -108,7 +126,12 @@ public class UserServiceImpl implements UserService {
      * @param id The ID of the user to delete.
      */
     @Override
+    @Transactional
     public void deleteById(@NotNull @Positive final Long id) {
         userRepository.deleteById(id);
+    }
+
+    private boolean isPresent(String email) {
+        return userRepository.existsByEmail(email);
     }
 }

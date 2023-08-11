@@ -1,12 +1,22 @@
 package com.example.services.museum.impl;
 
 import com.example.domain.museum.Event;
+import com.example.dto.museum.event.EventPublishingForm;
+import com.example.dto.museum.event.EventWithBody;
+import com.example.dto.museum.event.EventWithoutBody;
+import com.example.repositories.museum.AuthorRepository;
 import com.example.repositories.museum.EventRepository;
+import com.example.services.museum.AuthorService;
 import com.example.services.museum.EventService;
+import com.example.services.museum.exceptions.AuthorNotFoundException;
 import com.example.services.museum.exceptions.EventNotFoundException;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.annotation.Validated;
 
 import java.util.List;
 import java.util.function.Supplier;
@@ -17,20 +27,18 @@ import java.util.function.Supplier;
  * @author Evhen Malysh
  */
 @Service
+@Validated
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class EventServiceImpl implements EventService {
 
-    // @formatter:on
-
-    /**
-     * JPA repository for managing Event entities in DB.
-     */
+    public static final String EVENT_NOT_FOUND_WITH_ID = "Event not found with ID: %s";
     private final EventRepository eventRepository;
+    private final AuthorRepository authorRepository;
 
     private static Supplier<EventNotFoundException> getEventNotFoundExceptionSupplier(Long id) {
         return () -> new EventNotFoundException(
-                String.format("Event not found with ID: %s", id));
+                String.format(EVENT_NOT_FOUND_WITH_ID, id));
     }
 
     /**
@@ -38,8 +46,9 @@ public class EventServiceImpl implements EventService {
      *
      * @return List of events.
      */
-    public List<Event> getAll() {
-        return eventRepository.findAll();
+    @Override
+    public List<EventWithoutBody> getAll() {
+        return eventRepository.findAllEventsWithoutBody();
     }
 
     /**
@@ -50,24 +59,36 @@ public class EventServiceImpl implements EventService {
      * @throws EventNotFoundException if the event with the given ID
      *                                is not found.
      */
-    public Event getById(final Long id) {
-        return eventRepository.findById(id)
+    @Override
+    public EventWithBody getById(@NotNull @Positive final Long id) {
+        return eventRepository.findEventWithBodyById(id)
                 .orElseThrow(getEventNotFoundExceptionSupplier(id));
     }
 
     /**
      * Create a new event.
      *
-     * @param event The event to create.
+     * @param form Form of the event to create.
      * @return The created event.
-     * @throws IllegalArgumentException if the event is null.
+     * @throws IllegalArgumentException if the event is null or invalid.
+     * @throws AuthorNotFoundException  if the author is not found.
      */
+    @Override
     @Transactional
-    public Event save(final Event event) {
-        if (event == null) {
-            throw new IllegalArgumentException("Event cannot be null.");
-        }
-        return eventRepository.save(event);
+    public EventWithBody save(@NotNull @Valid final EventPublishingForm form) {
+        var authorId = form.authorId();
+        var author = authorRepository.findById(authorId)
+                .orElseThrow(() -> new AuthorNotFoundException(
+                        String.format(AuthorServiceImpl.AUTHOR_WITH_ID_NOT_FOUND, authorId)));
+        var event = new Event(
+                form.title(),
+                form.body(),
+                form.timing(),
+                form.capacity(),
+                author
+        );
+        var id = eventRepository.save(event).getId();
+        return getById(id);
     }
 
     /**
@@ -76,9 +97,17 @@ public class EventServiceImpl implements EventService {
      * @param id The ID of the event to delete.
      * @throws IllegalArgumentException if the event is not found.
      */
+    @Override
     @Transactional
     public void deleteById(final Long id) {
-        var event = getById(id);
-        eventRepository.delete(event);
+        if (isNotPresent(id)) {
+            throw new EventNotFoundException(
+                    String.format(EVENT_NOT_FOUND_WITH_ID, id));
+        }
+        eventRepository.deleteById(id);
+    }
+
+    private boolean isNotPresent(Long id) {
+        return !eventRepository.existsById(id);
     }
 }

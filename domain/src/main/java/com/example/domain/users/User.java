@@ -12,6 +12,8 @@ import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Set;
 
+import static com.example.constraints.domain.UserConstraints.*;
+
 /**
  * Entity class representing a user in the application.
  *
@@ -25,21 +27,6 @@ import java.util.Set;
 @ToString
 public class User {
 
-    // @formatter:on
-
-    /**
-     * This regular expression enforces that the password must
-     * have at least one alphabetic character and at least one digit,
-     * and it must be at least 8 characters long.
-     */
-    private static final String PASSWORD_REGEXP
-            = "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,}$";
-
-    /**
-     * Maximum length of the password.
-     */
-    private static final int PASSWORD_MAX = 25;
-
     /**
      * Unique entity identifier.
      */
@@ -52,6 +39,7 @@ public class User {
      * The first name of the user.
      */
     @Column(name = "first_name", nullable = false)
+    @Size(min = MIN_NAME_LENGTH, max = MAX_NAME_LENGTH)
     @NotNull
     @NotBlank
     private String firstName;
@@ -60,6 +48,7 @@ public class User {
      * The last name of the user.
      */
     @Column(name = "last_name", nullable = false)
+    @Size(min = MIN_NAME_LENGTH, max = MAX_NAME_LENGTH)
     @NotNull
     @NotBlank
     private String lastName;
@@ -68,7 +57,7 @@ public class User {
      * The email address of the user.
      */
     @Column(name = "email", nullable = false)
-    @Email
+    @Email(regexp = EMAIL_REGEXP)
     @NotNull
     @NotBlank
     private String email;
@@ -107,6 +96,19 @@ public class User {
      */
     @UpdateTimestamp
     private LocalDateTime updatedAt;
+
+    public User(
+            final @NotNull @NotBlank String firstName,
+            final @NotNull @NotBlank String lastName,
+            final @NotNull @Email String email,
+            final @NotNull @Pattern(regexp = PASSWORD_REGEXP) String password,
+            Address address) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.password = password;
+        this.address = address;
+    }
 
     @Override
     public final boolean equals(final Object o) {

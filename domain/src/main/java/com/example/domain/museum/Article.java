@@ -7,6 +7,7 @@ import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.proxy.HibernateProxy;
+import org.springframework.validation.annotation.Validated;
 
 import java.time.LocalDateTime;
 import java.util.LinkedHashSet;
@@ -19,6 +20,7 @@ import java.util.Set;
  * @author Evhen Malysh
  */
 @Entity
+@Validated
 @Table(name = "articles", indexes = {
         @Index(name = "idx_article_title", columnList = "title"),
         @Index(name = "idx_article_author_id", columnList = "author_id"),
@@ -28,8 +30,6 @@ import java.util.Set;
 @Setter
 @ToString
 public class Article {
-
-    // @formatter:on
 
     /**
      * Unique identifier.

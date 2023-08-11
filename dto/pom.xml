@@ -16,5 +16,9 @@
             <groupId>com.example</groupId>
             <artifactId>domain</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.example</groupId>
+            <artifactId>libraries</artifactId>
+        </dependency>
     </dependencies>
 </project>

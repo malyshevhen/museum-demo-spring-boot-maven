@@ -1,9 +1,11 @@
 package com.example.repositories.users;
 
 import com.example.domain.users.User;
+import com.example.dto.users.UserShortResponse;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -19,4 +21,27 @@ public interface UserRepository extends JpaRepository<User, Long> {
      */
     @Query("select u from User u where u.email = ?1")
     Optional<User> findByEmail(String email);
+
+    @Query("""
+            SELECT com.example.dto.users.UserShortResponse(
+                u.firstName,
+                u.lastName,
+                u.email
+            )
+            FROM User u
+            """)
+    List<UserShortResponse> findAllDtos();
+
+    @Query("""
+            SELECT com.example.dto.users.UserShortResponse(
+                u.firstName,
+                u.lastName,
+                u.email
+            )
+            FROM User u
+            WHERE u.id = :id
+            """)
+    Optional<UserShortResponse> findDtoById(Long id);
+
+    boolean existsByEmail(String email);
 }

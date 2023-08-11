@@ -1,6 +1,8 @@
 package com.example.web.museum.controllers;
 
-import com.example.domain.museum.Article;
+import com.example.dto.museum.article.ArticlePublishingForm;
+import com.example.dto.museum.article.ArticleWithBody;
+import com.example.dto.museum.article.ArticleWithoutBody;
 import com.example.services.museum.ArticleService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -13,15 +15,8 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -32,32 +27,50 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/api/museum/articles")
+@Validated
 @Tag(name = "Articles", description = "API operations related to museum articles")
 @RequiredArgsConstructor
 public class ArticleController {
 
-    /**
-     *
-     */
     private final ArticleService articleService;
 
     /**
-     * Get a list of all articles.
+     * Get a list of all articles with body.
      *
      * @return List of articles.
      */
-    @GetMapping
-    @Operation(summary = "Get a list of all articles")
+    @GetMapping("/{authorId}")
+    @Operation(summary = "Get a list of all articles with body by author ID")
     @ApiResponses(value = {
             @ApiResponse(
                     responseCode = "200",
                     description = "Successfully retrieved the list of articles",
                     content = @Content(
                             mediaType = "application/json",
-                            schema = @Schema(implementation = Article.class)))})
+                            schema = @Schema(implementation = ArticleWithBody.class)))})
     @ResponseStatus(code = HttpStatus.OK)
-    public List<Article> getAll() {
-        return articleService.getAll();
+    public List<ArticleWithBody> getAllWithBodyByAuthorId(
+            @PathVariable @NotNull @Positive final Long authorId) {
+        return articleService.getAllWithBodyByAuthorId(authorId);
+    }
+
+    /**
+     * Get a list of all articles without body.
+     *
+     * @return List of articles.
+     */
+    @GetMapping
+    @Operation(summary = "Get a list of all articles without body")
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Successfully retrieved the list of articles",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = ArticleWithoutBody.class)))})
+    @ResponseStatus(code = HttpStatus.OK)
+    public List<ArticleWithoutBody> getAllWithoutBody() {
+        return articleService.getAllWithoutBody();
     }
 
     /**
@@ -74,12 +87,12 @@ public class ArticleController {
                     description = "Successfully retrieved the article",
                     content = @Content(
                             mediaType = "application/json",
-                            schema = @Schema(implementation = Article.class))),
+                            schema = @Schema(implementation = ArticleWithBody.class))),
             @ApiResponse(
                     responseCode = "404",
                     description = "Article not found")})
     @ResponseStatus(HttpStatus.OK)
-    public Article getById(
+    public ArticleWithBody getById(
             @PathVariable @NotNull @Positive final Long id) {
         return articleService.getById(id);
     }
@@ -98,37 +111,42 @@ public class ArticleController {
                     description = "Article created successfully",
                     content = @Content(
                             mediaType = "application/json",
-                            schema = @Schema(implementation = Article.class)))})
+                            schema = @Schema(implementation = ArticleWithBody.class)))})
     @ResponseStatus(HttpStatus.CREATED)
-    public Article create(
-            @RequestBody @NotNull @Valid final Article article) {
+    public ArticleWithBody create(
+            @RequestBody @NotNull @Valid final ArticlePublishingForm article) {
         return articleService.save(article);
     }
 
     /**
-     * Update an existing article.
+     * Update a title of an existing article.
      *
-     * @param article The updated article data.
+     * @param title The updated article title.
+     * @param body The updated article body.
      * @return The updated article.
      */
     @PutMapping("/{id}")
-    @Operation(summary = "Update an existing article")
+    @Operation(summary = "Update an existing article title")
     @ApiResponses(value = {
             @ApiResponse(
                     responseCode = "200",
-                    description = "Article updated successfully",
+                    description = "Article title updated successfully",
                     content = @Content(
                             mediaType = "application/json",
-                            schema = @Schema(implementation = Article.class))),
+                            schema = @Schema(implementation = ArticleWithBody.class))),
             @ApiResponse(
                     responseCode = "400",
-                    description = "Invalid request or article data"),
+                    description = "Invalid article ID or data"),
             @ApiResponse(
                     responseCode = "404",
                     description = "Article not found")})
     @ResponseStatus(HttpStatus.OK)
-    public Article update(@RequestBody @NotNull @Valid final Article article) {
-        return articleService.update(article);
+    public ArticleWithBody update(
+            @PathVariable @NotNull @Positive final Long id,
+            @RequestParam @NotNull @Valid final String title,
+            @RequestParam @NotNull @Valid final String body
+    ) {
+        return articleService.update(id, title, body);
     }
 
     /**

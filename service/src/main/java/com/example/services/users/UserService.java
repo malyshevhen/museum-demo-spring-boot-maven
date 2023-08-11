@@ -1,6 +1,9 @@
 package com.example.services.users;
 
+import com.example.domain.users.Address;
 import com.example.domain.users.User;
+import com.example.dto.users.UserRegistrationForm;
+import com.example.dto.users.UserShortResponse;
 
 import java.util.List;
 
@@ -14,7 +17,7 @@ public interface UserService {
      *
      * @return List of User objects representing all users.
      */
-    List<User> getAll();
+    List<UserShortResponse> getAll();
 
     /**
      * Get a specific user by ID.
@@ -23,7 +26,7 @@ public interface UserService {
      * @return The User object representing the requested user,
      * or null if not found.
      */
-    User getById(Long id);
+    UserShortResponse getById(Long id);
 
     /**
      * Create a new user.
@@ -31,16 +34,16 @@ public interface UserService {
      * @param user The User object containing the details of the new user.
      * @return The created User object.
      */
-    User save(User user);
+    UserShortResponse save(UserRegistrationForm user);
 
     /**
-     * Update an existing user.
+     * Update an existing user`s address.
      *
      * @param id   The ID of the user to update.
-     * @param user The User object containing the updated details.
-     * @return The updated User object, or null if user not found.
+     * @param address The user`s address to update.
+     * @return The updated user.
      */
-    User update(Long id, User user);
+    UserShortResponse updateAddress(Long id, Address address);
 
     /**
      * Delete a user by ID.

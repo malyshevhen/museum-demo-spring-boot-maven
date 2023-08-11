@@ -1,15 +1,21 @@
 package com.example.services.museum.impl;
 
 import com.example.domain.museum.Article;
+import com.example.dto.museum.article.ArticlePublishingForm;
+import com.example.dto.museum.article.ArticleWithBody;
+import com.example.dto.museum.article.ArticleWithoutBody;
 import com.example.repositories.museum.ArticleRepository;
+import com.example.repositories.museum.AuthorRepository;
 import com.example.services.museum.ArticleService;
 import com.example.services.museum.exceptions.ArticleNotFoundException;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.annotation.Validated;
 
 import java.util.List;
 import java.util.function.Supplier;
@@ -20,28 +26,32 @@ import java.util.function.Supplier;
  * @author Evhen Malysh
  */
 @Service
+@Validated
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class ArticleServiceImpl implements ArticleService {
+    public static final String ARTICLE_WITH_ID_NOT_FOUND = "Article with ID: %d not found.";
 
-    /**
-     *
-     */
     private final ArticleRepository articleRepository;
+    private final AuthorRepository authorRepository;
 
-    private static Supplier<ArticleNotFoundException> getArticleNotFoundExceptionSupplier(Long id) {
-        return () -> new ArticleNotFoundException(
-                String.format("Article with ID: %d not found.", id));
+    @Override
+    public List<ArticleWithBody> getAllWithBodyByAuthorId(
+            @NotNull @Positive final Long authorId) {
+        var articles = articleRepository.findAllWithBodyByAuthorId(authorId);
+        if (articles.isEmpty()) {
+            throw new ArticleNotFoundException("No articles found");
+        }
+        return articles;
     }
 
-    /**
-     * Get a list of all articles.
-     *
-     * @return List of articles.
-     */
     @Override
-    public List<Article> getAll() {
-        return articleRepository.findAll();
+    public List<ArticleWithoutBody> getAllWithoutBody() {
+        var articles = articleRepository.findAllWithoutBody();
+        if (articles.isEmpty()) {
+            throw new ArticleNotFoundException("No articles found");
+        }
+        return articles;
     }
 
     /**
@@ -51,40 +61,53 @@ public class ArticleServiceImpl implements ArticleService {
      * @return The article with the given ID, or null if not found.
      */
     @Override
-    public Article getById(@NotNull @Positive final Long id) {
-        return articleRepository.findById(id)
+    public ArticleWithBody getById(@NotNull @Positive final Long id) {
+        return articleRepository.findArticleWithBodyById(id)
                 .orElseThrow(getArticleNotFoundExceptionSupplier(id));
     }
 
     /**
      * Create a new article.
      *
-     * @param article The article to create.
+     * @param publishingForm The article publishing form to save new article.
      * @return The created article.
-     * @throws IllegalArgumentException has an existing ID.
      */
     @Override
-    public Article save(@NotNull final Article article) {
-        if (article.getId() != null) {
-            throw new IllegalArgumentException(
-                    "Article ID must be null for new articles.");
-        }
-        return articleRepository.save(article);
+    @Transactional
+    public ArticleWithBody save(
+            @NotNull @Valid final ArticlePublishingForm publishingForm) {
+        var author = authorRepository.findById(publishingForm.authorId())
+                .orElseThrow();
+        var article = new Article(
+                publishingForm.title(),
+                publishingForm.body(),
+                publishingForm.tags(),
+                author
+        );
+        var savedArticleId = articleRepository.save(article).getId();
+        return getById(savedArticleId);
     }
 
     /**
-     * Update an existing article.
+     * Update a title of an existing article.
      *
-     * @param article The updated article data.
+     * @param id    The ID of the article to update.
+     * @param title The updated article title.
      * @return The updated article.
-     * @throws IllegalArgumentException if the article ID is null.
+     * @throws ArticleNotFoundException if the article with given ID was not found.
      */
     @Override
-    public Article update(@NotNull @Valid final Article article) {
-        if (article.getId() == null) {
-            throw new IllegalArgumentException("Invalid article ID.");
+    @Transactional
+    public ArticleWithBody update(
+            @NotNull @Positive final Long id,
+            @NotNull @NotBlank final String title,
+            @NotNull @NotBlank final String body) {
+        if (isNotPresent(id)) {
+            throw new ArticleNotFoundException(
+                    String.format(ARTICLE_WITH_ID_NOT_FOUND, id));
         }
-        return articleRepository.save(article);
+        articleRepository.updateTitleAndBodyById(title, body, id);
+        return getById(id);
     }
 
     /**
@@ -93,8 +116,21 @@ public class ArticleServiceImpl implements ArticleService {
      * @param id The ID of the article to delete.
      */
     @Override
+    @Transactional
     public void deleteById(@NotNull @Positive final Long id) {
-        var existingArticle = getById(id);
-        articleRepository.delete(existingArticle);
+        if (isNotPresent(id)) {
+            throw new ArticleNotFoundException(
+                    String.format(ARTICLE_WITH_ID_NOT_FOUND, id));
+        }
+        articleRepository.deleteById(id);
+    }
+
+    private boolean isNotPresent(Long id) {
+        return !articleRepository.existsById(id);
+    }
+
+    private static Supplier<ArticleNotFoundException> getArticleNotFoundExceptionSupplier(Long id) {
+        return () -> new ArticleNotFoundException(
+                String.format(ARTICLE_WITH_ID_NOT_FOUND, id));
     }
 }

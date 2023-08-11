@@ -11,6 +11,7 @@ import lombok.ToString;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.proxy.HibernateProxy;
+import org.springframework.validation.annotation.Validated;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -21,6 +22,7 @@ import java.util.Objects;
  * @author Evhen Malysh
  */
 @Entity
+@Validated
 @Table(name = "events", indexes = {
         @Index(name = "idx_event_title", columnList = "title"),
         @Index(name = "idx_event_timing", columnList = "timing")
@@ -30,8 +32,6 @@ import java.util.Objects;
 @Setter
 @ToString
 public class Event {
-
-    // @formatter:on
 
     /**
      * Unique entity identifier.
@@ -106,10 +106,15 @@ public class Event {
     public Event(
             final @NotNull @NotBlank String eventTitle,
             final @NotNull @NotBlank String eventBody,
+            final LocalDateTime timing,
+            final Integer capacity,
             final @NotNull Author eventAuthor) {
         this.title = eventTitle;
         this.body = eventBody;
+        this.timing = timing;
+        this.capacity = capacity;
         this.author = eventAuthor;
+        this.status = EventStatus.SCHEDULED;
     }
 
     @Override

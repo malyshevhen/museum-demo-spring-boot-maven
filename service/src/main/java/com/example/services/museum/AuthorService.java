@@ -1,11 +1,14 @@
 package com.example.services.museum;
 
-import com.example.domain.museum.Author;
+import com.example.dto.museum.author.AuthorRegistrationForm;
+import com.example.dto.museum.author.AuthorShortResponse;
 
 import java.util.List;
 
 /**
  * Service interface for handling operations related to authors.
+ *
+ * @author Evhen Malysh
  */
 public interface AuthorService {
 
@@ -14,7 +17,7 @@ public interface AuthorService {
      *
      * @return List of Author objects representing all authors.
      */
-    List<Author> getAll();
+    List<AuthorShortResponse> getAllAuthors();
 
     /**
      * Get a specific author by ID.
@@ -22,24 +25,24 @@ public interface AuthorService {
      * @param id The ID of the author to retrieve.
      * @return The Author object representing the requested author.
      */
-    Author getById(Long id);
+    AuthorShortResponse getById(Long id);
 
     /**
      * Create a new author.
      *
-     * @param author The Author object containing the details of the new author.
+     * @param authorRegistrationForm The Author object containing the details of the new author.
      * @return The created Author object.
      */
-    Author save(Author author);
+    AuthorShortResponse save(AuthorRegistrationForm authorRegistrationForm);
 
     /**
-     * Update an existing author.
+     * Update an existing author`s username.
      *
      * @param id     The ID of the author to update.
-     * @param author The Author object containing the updated details.
+     * @param username The author`s username to update.
      * @return The updated Author object.
      */
-    Author update(Long id, Author author);
+    AuthorShortResponse updateUsername(Long id, String username);
 
     /**
      * Delete an author by ID.
