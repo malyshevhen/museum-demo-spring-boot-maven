@@ -1,9 +1,8 @@
 package com.example.domain.museum;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Positive;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -15,6 +14,8 @@ import org.springframework.validation.annotation.Validated;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
+
+import static com.example.constraints.domain.museum.EventConstraints.*;
 
 /**
  * Event is domain model of the museum event business object.
@@ -46,21 +47,24 @@ public class Event {
     @Column(name = "title", nullable = false)
     @NotNull
     @NotBlank
+    @Size(min = MIN_TITLE_LENGTH, max = MAX_TITLE_LENGTH)
     private String title;
 
     /**
-     * Body of event web-post.
+     * Content of event web-post.
      */
-    @Column(name = "body", nullable = false)
+    @Column(name = "content", nullable = false)
     @NotNull
     @NotBlank
-    private String body;
+    @Size(min = MIN_BODY_LENGTH, max = MAX_BODY_LENGTH)
+    private String content;
 
     /**
      * Time when event is starts.
      */
     @Column(name = "timing")
     @NotNull
+    @Future
     private LocalDateTime timing;
 
     /**
@@ -84,6 +88,8 @@ public class Event {
      */
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "author_id", nullable = false)
+    @NotNull
+    @Valid
     private Author author;
 
     /**
@@ -100,7 +106,7 @@ public class Event {
 
     /**
      * @param eventTitle  Event post title.
-     * @param eventBody   Body of event web-post.
+     * @param eventBody   content of event web-post.
      * @param eventAuthor Author of the web-post.
      */
     public Event(
@@ -110,7 +116,7 @@ public class Event {
             final Integer capacity,
             final @NotNull Author eventAuthor) {
         this.title = eventTitle;
-        this.body = eventBody;
+        this.content = eventBody;
         this.timing = timing;
         this.capacity = capacity;
         this.author = eventAuthor;

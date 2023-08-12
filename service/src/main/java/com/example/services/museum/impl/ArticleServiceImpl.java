@@ -2,8 +2,8 @@ package com.example.services.museum.impl;
 
 import com.example.domain.museum.Article;
 import com.example.dto.museum.article.ArticlePublishingForm;
-import com.example.dto.museum.article.ArticleWithBody;
-import com.example.dto.museum.article.ArticleWithoutBody;
+import com.example.dto.museum.article.ArticleWithContent;
+import com.example.dto.museum.article.ArticleWithoutContent;
 import com.example.repositories.museum.ArticleRepository;
 import com.example.repositories.museum.AuthorRepository;
 import com.example.services.museum.ArticleService;
@@ -36,7 +36,7 @@ public class ArticleServiceImpl implements ArticleService {
     private final AuthorRepository authorRepository;
 
     @Override
-    public List<ArticleWithBody> getAllWithBodyByAuthorId(
+    public List<ArticleWithContent> getAllWithBodyByAuthorId(
             @NotNull @Positive final Long authorId) {
         var articles = articleRepository.findAllWithBodyByAuthorId(authorId);
         if (articles.isEmpty()) {
@@ -46,8 +46,8 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public List<ArticleWithoutBody> getAllWithoutBody() {
-        var articles = articleRepository.findAllWithoutBody();
+    public List<ArticleWithoutContent> getAllWithoutBody() {
+        var articles = articleRepository.findAllWithoutContent();
         if (articles.isEmpty()) {
             throw new ArticleNotFoundException("No articles found");
         }
@@ -61,8 +61,8 @@ public class ArticleServiceImpl implements ArticleService {
      * @return The article with the given ID, or null if not found.
      */
     @Override
-    public ArticleWithBody getById(@NotNull @Positive final Long id) {
-        return articleRepository.findArticleWithBodyById(id)
+    public ArticleWithContent getById(@NotNull @Positive final Long id) {
+        return articleRepository.findArticleWithContentById(id)
                 .orElseThrow(getArticleNotFoundExceptionSupplier(id));
     }
 
@@ -74,13 +74,13 @@ public class ArticleServiceImpl implements ArticleService {
      */
     @Override
     @Transactional
-    public ArticleWithBody save(
+    public ArticleWithContent save(
             @NotNull @Valid final ArticlePublishingForm publishingForm) {
         var author = authorRepository.findById(publishingForm.authorId())
                 .orElseThrow();
         var article = new Article(
                 publishingForm.title(),
-                publishingForm.body(),
+                publishingForm.content(),
                 publishingForm.tags(),
                 author
         );
@@ -98,7 +98,7 @@ public class ArticleServiceImpl implements ArticleService {
      */
     @Override
     @Transactional
-    public ArticleWithBody update(
+    public ArticleWithContent update(
             @NotNull @Positive final Long id,
             @NotNull @NotBlank final String title,
             @NotNull @NotBlank final String body) {

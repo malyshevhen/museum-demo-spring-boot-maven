@@ -1,6 +1,6 @@
-package com.example.dto.museum.article;
+package com.example.dto.museum.event;
 
-import com.example.domain.museum.Article;
+import com.example.domain.museum.Event;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
@@ -8,19 +8,19 @@ import org.springframework.validation.annotation.Validated;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.Set;
 
 /**
- * DTO for {@link Article}
+ * DTO for {@link Event}
  */
 @Validated
-public record ArticleWithBody(
+public record EventWithContent(
         @NotNull @Positive Long id,
         @NotNull @NotBlank String title,
-        @NotNull @NotBlank String body,
-        Set<Article.ArticleTag> tags,
+        @NotNull @NotBlank String content,
+        @NotNull LocalDateTime timing,
+        @NotNull @Positive Integer capacity,
+        @NotNull Event.EventStatus status,
         @NotNull @Positive Long authorId,
-        @NotNull @NotBlank String authorUsername,
-        @NotNull LocalDateTime createdAt
+        @NotNull @NotBlank String authorUsername
 ) implements Serializable {
 }

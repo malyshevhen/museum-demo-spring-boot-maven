@@ -1,4 +1,4 @@
-package com.example.constraints.domain;
+package com.example.constraints.domain.users;
 
 public class UserConstraints {
     private UserConstraints() {

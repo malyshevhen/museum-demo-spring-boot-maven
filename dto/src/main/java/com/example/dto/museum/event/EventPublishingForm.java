@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 @Validated
 public record EventPublishingForm(
         @NotNull @NotBlank String title,
-        @NotNull @NotBlank String body,
+        @NotNull @NotBlank String content,
         @NotNull LocalDateTime timing,
         @NotNull @Positive Integer capacity,
         @NotNull Event.EventStatus status,

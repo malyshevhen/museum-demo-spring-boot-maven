@@ -1,9 +1,8 @@
 package com.example.services.museum;
 
-import com.example.domain.museum.Event;
 import com.example.dto.museum.event.EventPublishingForm;
-import com.example.dto.museum.event.EventWithBody;
-import com.example.dto.museum.event.EventWithoutBody;
+import com.example.dto.museum.event.EventWithContent;
+import com.example.dto.museum.event.EventWithoutContent;
 import com.example.services.museum.exceptions.EventNotFoundException;
 
 import java.util.List;
@@ -20,7 +19,7 @@ public interface EventService {
      *
      * @return List of events.
      */
-    List<EventWithoutBody> getAll();
+    List<EventWithoutContent> getAll();
 
     /**
      * Get a specific event by its ID.
@@ -30,7 +29,7 @@ public interface EventService {
      * @throws EventNotFoundException if the event with the given
      *                                ID is not found.
      */
-    EventWithBody getById(Long id);
+    EventWithContent getById(Long id);
 
     /**
      * Create a new event.
@@ -39,7 +38,7 @@ public interface EventService {
      * @return The created event.
      * @throws IllegalArgumentException if the event is null.
      */
-    EventWithBody save(EventPublishingForm event);
+    EventWithContent save(EventPublishingForm event);
 
     /**
      * Delete an event by its ID.

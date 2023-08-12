@@ -1,8 +1,8 @@
 package com.example.repositories.museum;
 
 import com.example.domain.museum.Event;
-import com.example.dto.museum.event.EventWithBody;
-import com.example.dto.museum.event.EventWithoutBody;
+import com.example.dto.museum.event.EventWithContent;
+import com.example.dto.museum.event.EventWithoutContent;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -15,7 +15,7 @@ import java.util.Optional;
 public interface EventRepository extends JpaRepository<Event, Long> {
 
     @Query("""
-            SELECT new com.example.dto.museum.event.EventWithoutBody(
+            SELECT new com.example.dto.museum.event.EventWithoutContent(
                 e.id,
                 e.title,
                 e.timing,
@@ -26,13 +26,13 @@ public interface EventRepository extends JpaRepository<Event, Long> {
             )
             FROM Event e
             """)
-    List<EventWithoutBody> findAllEventsWithoutBody();
+    List<EventWithoutContent> findAllEventsWithoutContent();
 
     @Query("""
-            SELECT new com.example.dto.museum.event.EventWithBody(
+            SELECT new com.example.dto.museum.event.EventWithContent(
                 e.id,
                 e.title,
-                e.body,
+                e.content,
                 e.timing,
                 e.capacity,
                 e.status,
@@ -42,5 +42,5 @@ public interface EventRepository extends JpaRepository<Event, Long> {
             FROM Event e
             WHERE e.id = :id
             """)
-    Optional<EventWithBody> findEventWithBodyById(Long id);
+    Optional<EventWithContent> findEventWithContentById(Long id);
 }

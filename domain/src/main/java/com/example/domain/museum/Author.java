@@ -1,20 +1,40 @@
 package com.example.domain.museum;
 
-import com.example.domain.users.User;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import lombok.*;
+import java.time.LocalDateTime;
+import java.util.LinkedHashSet;
+import java.util.Objects;
+import java.util.Set;
+
+import jakarta.validation.Valid;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.proxy.HibernateProxy;
 import org.springframework.validation.annotation.Validated;
 
-import java.time.LocalDateTime;
-import java.util.LinkedHashSet;
-import java.util.Objects;
-import java.util.Set;
+import static com.example.constraints.domain.users.UserConstraints.MAX_NAME_LENGTH;
+import static com.example.constraints.domain.users.UserConstraints.MIN_NAME_LENGTH;
+import com.example.domain.users.User;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Index;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 /**
  * Author is domain model of the author business object.
@@ -34,8 +54,6 @@ import java.util.Set;
 @ToString
 public class Author {
 
-    // @formatter:on
-
     /**
      * Unique identifier.
      */
@@ -47,6 +65,9 @@ public class Author {
     /**
      * Nickname of the author.
      */
+    @NotNull
+    @NotBlank
+    @Size(min = MIN_NAME_LENGTH, max = MAX_NAME_LENGTH)
     @Column(name = "username")
     private String username;
 
@@ -56,6 +77,7 @@ public class Author {
     @OneToOne
     @JoinColumn(name = "user_id", nullable = false, unique = true)
     @NotNull
+    @Valid
     private User user;
 
     /**

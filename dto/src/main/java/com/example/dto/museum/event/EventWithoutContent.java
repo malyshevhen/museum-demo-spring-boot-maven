@@ -1,7 +1,6 @@
 package com.example.dto.museum.event;
 
 import com.example.domain.museum.Event;
-import com.example.domain.museum.Event.EventStatus;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
@@ -14,7 +13,7 @@ import java.time.LocalDateTime;
  * DTO for {@link Event}
  */
 @Validated
-public record EventWithoutBody(
+public record EventWithoutContent(
         @NotNull @Positive Long id,
         @NotNull @NotBlank String title,
         @NotNull LocalDateTime timing,

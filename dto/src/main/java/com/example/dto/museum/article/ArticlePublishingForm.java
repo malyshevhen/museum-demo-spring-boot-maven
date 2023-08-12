@@ -15,7 +15,7 @@ import java.util.Set;
 @Validated
 public record ArticlePublishingForm(
         @NotNull @NotBlank String title,
-        @NotNull @NotBlank String body,
+        @NotNull @NotBlank String content,
         Set<Article.ArticleTag> tags,
         @NotNull @Positive Long authorId
 ) implements Serializable {

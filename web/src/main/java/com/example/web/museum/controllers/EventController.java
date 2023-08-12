@@ -1,8 +1,8 @@
 package com.example.web.museum.controllers;
 
 import com.example.dto.museum.event.EventPublishingForm;
-import com.example.dto.museum.event.EventWithBody;
-import com.example.dto.museum.event.EventWithoutBody;
+import com.example.dto.museum.event.EventWithContent;
+import com.example.dto.museum.event.EventWithoutContent;
 import com.example.services.museum.EventService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -44,9 +44,9 @@ public class EventController {
                     description = "Successfully retrieved the list of events",
                     content = @Content(
                             mediaType = "application/json",
-                            schema = @Schema(implementation = EventWithoutBody.class)))})
+                            schema = @Schema(implementation = EventWithoutContent.class)))})
     @ResponseStatus(code = HttpStatus.OK)
-    public List<EventWithoutBody> getAll() {
+    public List<EventWithoutContent> getAll() {
         return eventService.getAll();
     }
 
@@ -64,7 +64,7 @@ public class EventController {
                     description = "Successfully retrieved the event",
                     content = @Content(
                             mediaType = "application/json",
-                            schema = @Schema(implementation = EventWithBody.class))),
+                            schema = @Schema(implementation = EventWithContent.class))),
             @ApiResponse(
                     responseCode = "400",
                     description = "Invalid ID"),
@@ -72,7 +72,7 @@ public class EventController {
                     responseCode = "404",
                     description = "Event not found")})
     @ResponseStatus(HttpStatus.OK)
-    public EventWithBody getById(@PathVariable @NotNull @Positive final Long id) {
+    public EventWithContent getById(@PathVariable @NotNull @Positive final Long id) {
         return eventService.getById(id);
     }
 
@@ -90,12 +90,12 @@ public class EventController {
                     description = "Event created successfully",
                     content = @Content(
                             mediaType = "application/json",
-                            schema = @Schema(implementation = EventWithBody.class))),
+                            schema = @Schema(implementation = EventWithContent.class))),
             @ApiResponse(
                     responseCode = "400",
                     description = "Event cant be null")})
     @ResponseStatus(HttpStatus.CREATED)
-    public EventWithBody create(
+    public EventWithContent create(
             @RequestBody @NotNull final EventPublishingForm eventPublishingForm) {
         return eventService.save(eventPublishingForm);
     }

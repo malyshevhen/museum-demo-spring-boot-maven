@@ -4,7 +4,6 @@ import jakarta.validation.Validation;
 import jakarta.validation.Validator;
 import jakarta.validation.ValidatorFactory;
 import org.instancio.Instancio;
-import org.instancio.Model;
 import org.instancio.junit.InstancioExtension;
 import org.instancio.junit.WithSettings;
 import org.instancio.settings.Keys;
@@ -14,15 +13,23 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.NullAndEmptySource;
 import org.junit.jupiter.params.provider.ValueSource;
 
-import static com.example.constraints.domain.UserConstraints.MAX_NAME_LENGTH;
-import static com.example.constraints.domain.UserConstraints.MIN_NAME_LENGTH;
-import static org.instancio.Select.field;
+import java.util.stream.Stream;
+
+import static com.example.constraints.domain.constants.TestConstants.*;
+import static com.example.utils.InstancioModels.getUserModel;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+/**
+ * Unit tests of User validations.
+ *
+ * @author Evhen Malysh
+ */
 @ExtendWith(InstancioExtension.class)
 class UserTest {
     private Validator validator;
@@ -41,7 +48,7 @@ class UserTest {
     @DisplayName("No constraint violations with valid user")
     @Test
     void testPass() {
-        var validUser = Instancio.of(getInstancioUserModel()).create();
+        var validUser = Instancio.of(getUserModel()).create();
         var violations = validator.validate(validUser);
 
         assertTrue(violations.isEmpty());
@@ -50,9 +57,9 @@ class UserTest {
     @DisplayName("Constraint violations should be created when firstname is blank")
     @ParameterizedTest
     @NullAndEmptySource
-    @ValueSource(strings = {"   ", "2_", "31_____________________________"})
+    @MethodSource("invalidStringFields")
     void invalidFirstnameFails(String firstname) {
-        var user = Instancio.of(getInstancioUserModel()).create();
+        var user = Instancio.of(getUserModel()).create();
         user.setFirstName(firstname);
 
         var violations = validator.validate(user);
@@ -63,9 +70,9 @@ class UserTest {
     @DisplayName("Constraint violations should be created when lastname is invalid")
     @ParameterizedTest
     @NullAndEmptySource
-    @ValueSource(strings = {"   "})
+    @MethodSource("invalidStringFields")
     void invalidLastnameFails(String lastname) {
-        var user = Instancio.of(getInstancioUserModel()).create();
+        var user = Instancio.of(getUserModel()).create();
         user.setLastName(lastname);
 
         var violations = validator.validate(user);
@@ -73,12 +80,20 @@ class UserTest {
         assertFalse(violations.isEmpty());
     }
 
+    private static Stream<Arguments> invalidStringFields() {
+        return Stream.of(
+                Arguments.of(EMPTY_STRING),
+                Arguments.of(TWO_CHAR_STRING),
+                Arguments.of(THIRTYONE_CHAR_STRING)
+        );
+    }
+
     @DisplayName("Constraint violations should be created when email is invalid")
     @ParameterizedTest
     @NullAndEmptySource
     @ValueSource(strings = {"   ", "email", "email@", "@email", "email@gmail", "@gmail.com"})
     void invalidEmailFails(String email) {
-        var user = Instancio.of(getInstancioUserModel()).create();
+        var user = Instancio.of(getUserModel()).create();
         user.setEmail(email);
 
         var violations = validator.validate(user);
@@ -91,32 +106,11 @@ class UserTest {
     @NullAndEmptySource
     @ValueSource(strings = {"   ", "noDigits", "sh0rt"})
     void invalidPasswordFails(String password) {
-        var user = Instancio.of(getInstancioUserModel()).create();
+        var user = Instancio.of(getUserModel()).create();
         user.setPassword(password);
 
         var violations = validator.validate(user);
 
         assertFalse(violations.isEmpty());
-    }
-
-    private static Model<User> getInstancioUserModel() {
-        return Instancio.of(User.class)
-                .ignore(field("id"))
-                .ignore(field("createdAt"))
-                .ignore(field("updatedAt"))
-                .ignore(field("roles"))
-                .generate(field("firstName"),
-                        gen -> gen.string()
-                                .minLength(MIN_NAME_LENGTH)
-                                .maxLength(MAX_NAME_LENGTH)
-                                .mixedCase())
-                .generate(field("lastName"),
-                        gen -> gen.string()
-                                .minLength(MIN_NAME_LENGTH)
-                                .maxLength(MAX_NAME_LENGTH)
-                                .mixedCase())
-                .set(field("password"), "ValidPassword1")
-                .set(field("email"), "valid@gmail.com")
-                .toModel();
     }
 }

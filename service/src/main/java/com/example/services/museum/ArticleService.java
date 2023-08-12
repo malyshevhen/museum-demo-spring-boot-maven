@@ -1,8 +1,8 @@
 package com.example.services.museum;
 
 import com.example.dto.museum.article.ArticlePublishingForm;
-import com.example.dto.museum.article.ArticleWithBody;
-import com.example.dto.museum.article.ArticleWithoutBody;
+import com.example.dto.museum.article.ArticleWithContent;
+import com.example.dto.museum.article.ArticleWithoutContent;
 import com.example.services.museum.exceptions.ArticleNotFoundException;
 
 import java.util.List;
@@ -20,7 +20,7 @@ public interface ArticleService {
      * @param id The ID of the article.
      * @return The article with the given ID, or null if not found.
      */
-    ArticleWithBody getById(Long id);
+    ArticleWithContent getById(Long id);
 
     /**
      * Create a new article.
@@ -29,7 +29,7 @@ public interface ArticleService {
      * @return The created article.
      * @throws IllegalArgumentException if the article is null.
      */
-    ArticleWithBody save(ArticlePublishingForm article);
+    ArticleWithContent save(ArticlePublishingForm article);
 
     /**
      * Update an existing article title.
@@ -39,21 +39,21 @@ public interface ArticleService {
      * @return The updated article.
      * @throws ArticleNotFoundException if the article is null or not found.
      */
-    ArticleWithBody update(Long id, String title, String body);
+    ArticleWithContent update(Long id, String title, String body);
 
     /**
-     * Get a list of article DTOs with article body by author ID.
+     * Get a list of article DTOs with article content by author ID.
      *
-     * @return ArticleWithBody List of DTOs with article body
+     * @return ArticleWithContent List of DTOs with article content
      */
-    List<ArticleWithBody> getAllWithBodyByAuthorId(Long authorId);
+    List<ArticleWithContent> getAllWithBodyByAuthorId(Long authorId);
 
     /**
-     * Get a list of all article DTOs without article body.
+     * Get a list of all article DTOs without article content.
      *
-     * @return ArticleWithoutBody List of DTOs without article body
+     * @return ArticleWithoutContent List of DTOs without article content
      */
-    List<ArticleWithoutBody> getAllWithoutBody();
+    List<ArticleWithoutContent> getAllWithoutBody();
 
     /**
      * Delete an article by its ID.

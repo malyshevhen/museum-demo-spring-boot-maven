@@ -12,7 +12,7 @@ import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Set;
 
-import static com.example.constraints.domain.UserConstraints.*;
+import static com.example.constraints.domain.users.UserConstraints.*;
 
 /**
  * Entity class representing a user in the application.

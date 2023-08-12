@@ -1,8 +1,10 @@
 package com.example.domain.museum;
 
 import jakarta.persistence.*;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -13,6 +15,8 @@ import java.time.LocalDateTime;
 import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Set;
+
+import static com.example.constraints.domain.museum.ArticleConstraints.*;
 
 /**
  * Article is domain model of the web-page article business object.
@@ -45,15 +49,17 @@ public class Article {
     @Column(name = "title", nullable = false)
     @NotNull
     @NotBlank
+    @Size(min = MIN_TITLE_LENGTH, max = MAX_TITLE_LENGTH)
     private String title;
 
     /**
-     * Body of article.
+     * Content of article.
      */
-    @Column(name = "body", nullable = false)
+    @Column(name = "content", nullable = false)
     @NotNull
     @NotBlank
-    private String body;
+    @Size(min = MIN_BODY_LENGTH, max = MAX_BODY_LENGTH)
+    private String content;
 
     /**
      * Collection of #tags related to the article.
@@ -67,6 +73,8 @@ public class Article {
     /**
      * Author of the article.
      */
+    @NotNull
+    @Valid
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "author_id", nullable = false)
     private Author author;
@@ -85,7 +93,7 @@ public class Article {
 
     /**
      * @param articleTitle  Title string of article
-     * @param articleBody   Body of article
+     * @param articleBody   content of article
      * @param articleTags   Collection of #tags related to the article
      * @param articleAuthor Author of the article
      */
@@ -94,7 +102,7 @@ public class Article {
                    final Set<ArticleTag> articleTags,
                    final Author articleAuthor) {
         this.title = articleTitle;
-        this.body = articleBody;
+        this.content = articleBody;
         this.tags = articleTags;
         this.author = articleAuthor;
     }

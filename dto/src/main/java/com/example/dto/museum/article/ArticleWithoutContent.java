@@ -14,7 +14,7 @@ import java.util.Set;
  * DTO for {@link Article}
  */
 @Validated
-public record ArticleWithoutBody(
+public record ArticleWithoutContent(
         @NotNull @Positive Long id,
         @NotNull @NotBlank String title,
         Set<Article.ArticleTag> tags,

@@ -2,11 +2,10 @@ package com.example.services.museum.impl;
 
 import com.example.domain.museum.Event;
 import com.example.dto.museum.event.EventPublishingForm;
-import com.example.dto.museum.event.EventWithBody;
-import com.example.dto.museum.event.EventWithoutBody;
+import com.example.dto.museum.event.EventWithContent;
+import com.example.dto.museum.event.EventWithoutContent;
 import com.example.repositories.museum.AuthorRepository;
 import com.example.repositories.museum.EventRepository;
-import com.example.services.museum.AuthorService;
 import com.example.services.museum.EventService;
 import com.example.services.museum.exceptions.AuthorNotFoundException;
 import com.example.services.museum.exceptions.EventNotFoundException;
@@ -47,8 +46,8 @@ public class EventServiceImpl implements EventService {
      * @return List of events.
      */
     @Override
-    public List<EventWithoutBody> getAll() {
-        return eventRepository.findAllEventsWithoutBody();
+    public List<EventWithoutContent> getAll() {
+        return eventRepository.findAllEventsWithoutContent();
     }
 
     /**
@@ -60,8 +59,8 @@ public class EventServiceImpl implements EventService {
      *                                is not found.
      */
     @Override
-    public EventWithBody getById(@NotNull @Positive final Long id) {
-        return eventRepository.findEventWithBodyById(id)
+    public EventWithContent getById(@NotNull @Positive final Long id) {
+        return eventRepository.findEventWithContentById(id)
                 .orElseThrow(getEventNotFoundExceptionSupplier(id));
     }
 
@@ -75,14 +74,14 @@ public class EventServiceImpl implements EventService {
      */
     @Override
     @Transactional
-    public EventWithBody save(@NotNull @Valid final EventPublishingForm form) {
+    public EventWithContent save(@NotNull @Valid final EventPublishingForm form) {
         var authorId = form.authorId();
         var author = authorRepository.findById(authorId)
                 .orElseThrow(() -> new AuthorNotFoundException(
                         String.format(AuthorServiceImpl.AUTHOR_WITH_ID_NOT_FOUND, authorId)));
         var event = new Event(
                 form.title(),
-                form.body(),
+                form.content(),
                 form.timing(),
                 form.capacity(),
                 author
