@@ -58,7 +58,7 @@ public class Article {
     @Column(name = "content", nullable = false)
     @NotNull
     @NotBlank
-    @Size(min = MIN_BODY_LENGTH, max = MAX_BODY_LENGTH)
+    @Size(min = MIN_CONTENT_LENGTH, max = MAX_CONTENT_LENGTH)
     private String content;
 
     /**

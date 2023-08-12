@@ -1,5 +1,6 @@
 package com.example.domain.museum;
 
+import com.example.domain.constants.TestConstants;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
 import jakarta.validation.ValidatorFactory;
@@ -19,9 +20,9 @@ import org.junit.jupiter.params.provider.MethodSource;
 import java.time.LocalDateTime;
 import java.util.stream.Stream;
 
-import static com.example.constraints.domain.constants.TestConstants.*;
-import static com.example.utils.InstancioModels.getEventModel;
-import static com.example.utils.InstancioModels.getAuthorModel;
+import static com.example.domain.constants.TestConstants.*;
+import static com.example.utils.InstancioDomainModels.getEventModel;
+import static com.example.utils.InstancioDomainModels.getAuthorModel;
 import static org.instancio.Select.field;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -71,14 +72,14 @@ class EventTest {
     private static Stream<Arguments> invalidTitle() {
         return Stream.of(
                 Arguments.of(EMPTY_STRING),
-                Arguments.of(TWO_CHAR_STRING),
-                Arguments.of(THREE_HUNDRED_ONE_CHAR_STRING));
+                Arguments.of(TestConstants.Events.UNDERSIZED_TITLE_FIELD),
+                Arguments.of(TestConstants.Events.OVERSIZED_TITLE_FIELD));
     }
 
     @DisplayName("Constraint violations should be created when body is invalid")
     @ParameterizedTest
     @MethodSource
-    void invalidBody(String body) {
+    void invalidContent(String body) {
         var event = Instancio.of(getEventModel()).create();
         event.setContent(body);
 
@@ -87,11 +88,11 @@ class EventTest {
         assertFalse(violations.isEmpty());
     }
 
-    private static Stream<Arguments> invalidBody() {
+    private static Stream<Arguments> invalidContent() {
         return Stream.of(
                 Arguments.of(EMPTY_STRING),
-                Arguments.of(TWENTY_NINE_CHAR_STRING),
-                Arguments.of(THREE_THOUSENT_ONE_CHAR_STRING));
+                Arguments.of(TestConstants.Events.UNDERSIZED_CONTENT_FIELD),
+                Arguments.of(TestConstants.Events.OVERSIZED_CONTENT_FIELD));
     }
 
 

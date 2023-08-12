@@ -18,17 +18,17 @@ public class UserConstraints {
     public static final String EMAIL_REGEXP = "^[A-Za-z0-9+_.-]+@([A-Za-z0-9-]+\\.)+[A-Za-z]{2,}$";
 
     /**
-     * Minimal length of user`s firstname
+     * Minimal length of user`s firstname and lastname.
      */
     public static final int MIN_NAME_LENGTH = 3;
 
     /**
-     * Maximum length of user`s firstname
+     * Maximum length of user`s firstname  and lastname.
      */
     public static final int MAX_NAME_LENGTH = 30;
 
     /**
      * Maximum length of the password.
      */
-    public static final int PASSWORD_MAX = 25;
+    public static final int PASSWORD_MAX_LENGTH = 25;
 }

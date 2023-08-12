@@ -20,8 +20,10 @@ import org.junit.jupiter.params.provider.ValueSource;
 
 import java.util.stream.Stream;
 
-import static com.example.constraints.domain.constants.TestConstants.*;
-import static com.example.utils.InstancioModels.getUserModel;
+import static com.example.domain.constants.TestConstants.*;
+import static com.example.domain.constants.TestConstants.Users.OVERSIZED_USER_FIELD;
+import static com.example.domain.constants.TestConstants.Users.UNDERSIZED_USER_FIELD;
+import static com.example.utils.InstancioDomainModels.getUserModel;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -83,8 +85,8 @@ class UserTest {
     private static Stream<Arguments> invalidStringFields() {
         return Stream.of(
                 Arguments.of(EMPTY_STRING),
-                Arguments.of(TWO_CHAR_STRING),
-                Arguments.of(THIRTYONE_CHAR_STRING)
+                Arguments.of(UNDERSIZED_USER_FIELD),
+                Arguments.of(OVERSIZED_USER_FIELD)
         );
     }
 

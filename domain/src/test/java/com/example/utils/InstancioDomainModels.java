@@ -18,7 +18,7 @@ import static org.instancio.Select.field;
  *
  * @author Evhen Malysh
  */
-public class InstancioModels {
+public class InstancioDomainModels {
 
     public static Model<User> getUserModel() {
         return Instancio.of(User.class)
@@ -71,8 +71,8 @@ public class InstancioModels {
                         .maxLength(ArticleConstraints.MAX_TITLE_LENGTH)
                         .mixedCase())
                 .generate(field("content"), gen -> gen.string()
-                        .minLength(ArticleConstraints.MIN_BODY_LENGTH)
-                        .maxLength(ArticleConstraints.MAX_BODY_LENGTH)
+                        .minLength(ArticleConstraints.MIN_CONTENT_LENGTH)
+                        .maxLength(ArticleConstraints.MAX_CONTENT_LENGTH)
                         .mixedCase())
                 .toModel();
     }
@@ -90,8 +90,8 @@ public class InstancioModels {
                         .maxLength(EventConstraints.MAX_TITLE_LENGTH)
                         .mixedCase())
                 .generate(field("content"), gen -> gen.string()
-                        .minLength(EventConstraints.MIN_BODY_LENGTH)
-                        .maxLength(EventConstraints.MAX_BODY_LENGTH)
+                        .minLength(EventConstraints.MIN_CONTENT_LENGTH)
+                        .maxLength(EventConstraints.MAX_CONTENT_LENGTH)
                         .mixedCase())
                 .toModel();
     }

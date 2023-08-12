@@ -1,5 +1,6 @@
 package com.example.domain.museum;
 
+import com.example.domain.constants.TestConstants;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
 import jakarta.validation.ValidatorFactory;
@@ -18,9 +19,8 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.stream.Stream;
 
-import static com.example.constraints.domain.constants.TestConstants.*;
-import static com.example.utils.InstancioModels.getArticleModel;
-import static com.example.utils.InstancioModels.getAuthorModel;
+import static com.example.utils.InstancioDomainModels.getArticleModel;
+import static com.example.utils.InstancioDomainModels.getAuthorModel;
 import static org.instancio.Select.field;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -68,15 +68,15 @@ class ArticleTest {
 
     private static Stream<Arguments> invalidTitle() {
         return Stream.of(
-                Arguments.of(EMPTY_STRING),
-                Arguments.of(TWO_CHAR_STRING),
-                Arguments.of(THREE_HUNDRED_ONE_CHAR_STRING));
+                Arguments.of(TestConstants.EMPTY_STRING),
+                Arguments.of(TestConstants.Articles.UNDERSIZED_TITLE_FIELD),
+                Arguments.of(TestConstants.Articles.OVERSIZED_TITLE_FIELD));
     }
 
     @DisplayName("Constraint violations should be created when body is invalid")
     @ParameterizedTest
     @MethodSource
-    void invalidBody(String body) {
+    void invalidContent(String body) {
         var article = Instancio.of(getArticleModel()).create();
         article.setContent(body);
 
@@ -85,11 +85,11 @@ class ArticleTest {
         assertFalse(violations.isEmpty());
     }
 
-    private static Stream<Arguments> invalidBody() {
+    private static Stream<Arguments> invalidContent() {
         return Stream.of(
-                Arguments.of(EMPTY_STRING),
-                Arguments.of(TWENTY_NINE_CHAR_STRING),
-                Arguments.of(THREE_THOUSENT_ONE_CHAR_STRING));
+                Arguments.of(TestConstants.EMPTY_STRING),
+                Arguments.of(TestConstants.Articles.UNDERSIZED_CONTENT_FIELD),
+                Arguments.of(TestConstants.Articles.OVERSIZED_CONTENT_FIELD));
     }
 
 
@@ -110,7 +110,7 @@ class ArticleTest {
         return Stream.of(
                 Arguments.of(
                         Instancio.of(getAuthorModel())
-                                .set(field("username"), EMPTY_STRING)
+                                .set(field("username"), TestConstants.EMPTY_STRING)
                                 .create())
         );
     }

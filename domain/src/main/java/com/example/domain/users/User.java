@@ -68,7 +68,7 @@ public class User {
     @Column(name = "password", nullable = false)
     @NotNull
     @Pattern(regexp = PASSWORD_REGEXP)
-    @Size(max = PASSWORD_MAX)
+    @Size(max = PASSWORD_MAX_LENGTH)
     private String password;
 
     /**

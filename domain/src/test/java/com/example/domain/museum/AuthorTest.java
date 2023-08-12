@@ -1,5 +1,6 @@
 package com.example.domain.museum;
 
+import com.example.domain.constants.TestConstants;
 import com.example.domain.users.User;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
@@ -21,9 +22,9 @@ import org.junit.jupiter.params.provider.NullSource;
 
 import java.util.stream.Stream;
 
-import static com.example.constraints.domain.constants.TestConstants.*;
-import static com.example.utils.InstancioModels.getAuthorModel;
-import static com.example.utils.InstancioModels.getUserModel;
+import static com.example.domain.constants.TestConstants.*;
+import static com.example.utils.InstancioDomainModels.getAuthorModel;
+import static com.example.utils.InstancioDomainModels.getUserModel;
 import static org.instancio.Select.field;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -73,8 +74,8 @@ class AuthorTest {
     private static Stream<Arguments> invalidUsername() {
         return Stream.of(
                 Arguments.of(EMPTY_STRING),
-                Arguments.of(TWO_CHAR_STRING),
-                Arguments.of(THIRTYONE_CHAR_STRING));
+                Arguments.of(TestConstants.Authors.UNDERSIZED_USERNAME_FIELD),
+                Arguments.of(TestConstants.Authors.OVERSIZED_USERNAME_FIELD));
     }
 
     @DisplayName("Constraint violations should be created when user is invalid")
