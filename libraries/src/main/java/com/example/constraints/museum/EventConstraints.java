@@ -1,8 +1,8 @@
-package com.example.constraints.domain.museum;
+package com.example.constraints.museum;
 
-public class ArticleConstraints {
-    private ArticleConstraints() {
-        throw new IllegalStateException("Utility class");
+public class EventConstraints {
+    private EventConstraints() {
+        throw new IllegalStateException("Utility class!");
     }
 
     public static final int MIN_TITLE_LENGTH = 3;

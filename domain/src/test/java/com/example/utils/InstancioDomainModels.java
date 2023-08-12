@@ -1,7 +1,7 @@
 package com.example.utils;
 
-import com.example.constraints.domain.museum.ArticleConstraints;
-import com.example.constraints.domain.museum.EventConstraints;
+import com.example.constraints.museum.ArticleConstraints;
+import com.example.constraints.museum.EventConstraints;
 import com.example.domain.museum.Article;
 import com.example.domain.museum.Author;
 import com.example.domain.museum.Event;
@@ -9,8 +9,8 @@ import com.example.domain.users.User;
 import org.instancio.Instancio;
 import org.instancio.Model;
 
-import static com.example.constraints.domain.users.UserConstraints.MAX_NAME_LENGTH;
-import static com.example.constraints.domain.users.UserConstraints.MIN_NAME_LENGTH;
+import static com.example.constraints.users.UserConstraints.MAX_NAME_LENGTH;
+import static com.example.constraints.users.UserConstraints.MIN_NAME_LENGTH;
 import static org.instancio.Select.field;
 
 /**

@@ -11,8 +11,8 @@ import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.proxy.HibernateProxy;
 import org.springframework.validation.annotation.Validated;
 
-import static com.example.constraints.domain.users.UserConstraints.MAX_NAME_LENGTH;
-import static com.example.constraints.domain.users.UserConstraints.MIN_NAME_LENGTH;
+import static com.example.constraints.users.UserConstraints.MAX_NAME_LENGTH;
+import static com.example.constraints.users.UserConstraints.MIN_NAME_LENGTH;
 import com.example.domain.users.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 

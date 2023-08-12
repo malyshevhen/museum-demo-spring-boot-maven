@@ -1,6 +1,6 @@
 package com.example.domain.museum;
 
-import com.example.domain.constants.TestConstants;
+import com.example.constants.TestConstants;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
 import jakarta.validation.ValidatorFactory;

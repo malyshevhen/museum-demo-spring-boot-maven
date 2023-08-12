@@ -1,9 +1,9 @@
-package com.example.domain.constants;
+package com.example.constants;
 
-import com.example.constraints.domain.museum.ArticleConstraints;
-import com.example.constraints.domain.museum.AuthorConstraints;
-import com.example.constraints.domain.museum.EventConstraints;
-import com.example.constraints.domain.users.UserConstraints;
+import com.example.constraints.museum.ArticleConstraints;
+import com.example.constraints.museum.AuthorConstraints;
+import com.example.constraints.museum.EventConstraints;
+import com.example.constraints.users.UserConstraints;
 import org.apache.commons.lang3.StringUtils;
 
 public class TestConstants {

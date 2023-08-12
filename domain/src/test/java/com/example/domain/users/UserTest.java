@@ -20,9 +20,9 @@ import org.junit.jupiter.params.provider.ValueSource;
 
 import java.util.stream.Stream;
 
-import static com.example.domain.constants.TestConstants.*;
-import static com.example.domain.constants.TestConstants.Users.OVERSIZED_USER_FIELD;
-import static com.example.domain.constants.TestConstants.Users.UNDERSIZED_USER_FIELD;
+import static com.example.constants.TestConstants.*;
+import static com.example.constants.TestConstants.Users.OVERSIZED_USER_FIELD;
+import static com.example.constants.TestConstants.Users.UNDERSIZED_USER_FIELD;
 import static com.example.utils.InstancioDomainModels.getUserModel;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;

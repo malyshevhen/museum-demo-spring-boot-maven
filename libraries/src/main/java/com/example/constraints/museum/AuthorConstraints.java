@@ -1,4 +1,4 @@
-package com.example.constraints.domain.museum;
+package com.example.constraints.museum;
 
 public class AuthorConstraints {
     /**

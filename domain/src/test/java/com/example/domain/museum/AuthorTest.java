@@ -1,6 +1,6 @@
 package com.example.domain.museum;
 
-import com.example.domain.constants.TestConstants;
+import com.example.constants.TestConstants;
 import com.example.domain.users.User;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
@@ -22,7 +22,7 @@ import org.junit.jupiter.params.provider.NullSource;
 
 import java.util.stream.Stream;
 
-import static com.example.domain.constants.TestConstants.*;
+import static com.example.constants.TestConstants.*;
 import static com.example.utils.InstancioDomainModels.getAuthorModel;
 import static com.example.utils.InstancioDomainModels.getUserModel;
 import static org.instancio.Select.field;
