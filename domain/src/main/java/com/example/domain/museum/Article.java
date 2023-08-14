@@ -16,6 +16,8 @@ import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Set;
 
+import static com.example.constraints.museum.ArticleConstraints.*;
+
 /**
  * Article is domain model of the web-page article business object.
  *
