@@ -5,14 +5,29 @@
 
 ### Description:
 
-Modular maven-based java spring-boot application, that written to level up knowledge of maven build tool, spring boot, and some libraries.
-It is a back-end part of abstract Museum Web Site, and provide REST endpoints with basic CRUD functionality.
+Modular maven-based java spring-boot application, written to level up knowledge of maven build tool, spring boot, and some libraries.
+It is a back-end part of the abstract Museum Website and provides REST endpoints with basic CRUD functionality.
 
 ---
 
 ## App Architecture:
 
- <!-- ![app-uml-diagram]() -->
+> The project has basic 'onion' or three-layer architecture.
+
+ ![app-uml-diagram](Project-simple-diagram.png)
+#### Modules:
+
+1. Domain module:
+	Contains domain models of the project
+2. DTO module:
+	Contains Data Transfer Objects as forms for creating domain models, and retrieving them via REST API
+3. Service module:
+	Contains classes with transactional logic, business logic, and validation. 
+4. Web module:
+	 Contains REST Controllers and RestControllerAdvice classes for handling API calls and processing exceptions 
+5. Libraries module:
+	Shares constraints, constants and utility classes. 
+
 
 ---
 
@@ -206,33 +221,71 @@ It is a back-end part of abstract Museum Web Site, and provide REST endpoints wi
 
 #### WEB:
 
-- Spring Web.
+- [Spring Web](https://spring.io/projects/spring-framework).
 	- REST Controllers for endpoints
 	- RestControllerAdvice for exception handling
-- Swagger 3 (Springdoc Openapi)
+- Swagger ([Springdoc OpenAPI](https://springdoc.org/))
 	- Generating openAPI documentation
 	- Swagger Web UI by link: [swagger-ui](http://localhost:8080/swagger-ui/index.html)
-- Jackson data-bind
+- [Jackson databind](https://github.com/FasterXML/jackson-databind)
 
 #### Persistence:
 
-- Spring Data JPA
+- [Spring Data JPA](https://spring.io/projects/spring-data-jpa)
 	- Hibernate as default ORM framework
 	- Records DTO projections for retrieving data 
 	- Transaction management by spring @Transactional
-- Flyway SQL migration, for managing schema versions
-- PostgreSQL as RDBMS
+- [Flyway](https://flywaydb.org/) SQL migration, for managing schemes versions
+- [PostgreSQL](https://www.postgresql.org/) as RDBMS
 
 #### Tests:
 
-- JUnit 5
-- Spring Boot Test
+- [JUnit 5](https://junit.org/junit5/docs/current/user-guide/)
+- [Mockito](https://site.mockito.org/)
+- [Spring Boot Test](https://docs.spring.io/spring-boot/docs/current/api/org/springframework/boot/test/context/SpringBootTest.html)
 	- MockMVC for testing API cals
 	- SpringBootTest for integration testing
-- Testcontainers for integration testing
-- Instancio for generating fake test data
+- [Testcontainers](https://testcontainers.com/guides/getting-started-with-testcontainers-for-java/) for integration testing
+- [Instancio](https://www.instancio.org/getting-started/) for generating fake test data
 
 #### Other:
 
-- Lombok
-- Java Bean Validation (Hibernate Validation)
+- [Lombok](https://projectlombok.org/features/)
+- Java Bean Validation ([Hibernate Validation](https://hibernate.org/validator/))
+
+### How you can try it:
+
+> Now the project is in development, and not everything should work perfectly fine 😊.  
+> But I fix all issues as soon as possible 😅.  
+
+__What do you need:__
+
+1. You should have Docker with Docker compose plugin (or Docker desktop) installed on your machine. Link with instructions: [Get Docker](https://docs.docker.com/get-docker/)
+2. Java 17 installed. I recommend using [SDK-man](https://sdkman.io/) for this. It is not so easy on Windows, but it is worth it. (Link on GitHub post: [Using SDKMAN! with git for Windows shell (git bash)](https://gist.github.com/gavvvr/7d90014adefa8b27fe3b0e1c2a0e6485#using-sdkman-with-git-for-windows-shell-git-bash)).
+3. And that\`s it 😎.
+
+__Installation steps:__
+
+1. Clone this repository.
+
+3. Run this command in your terminal (on Linux and Mac), Power-Shell or Git-bash (on Windows), but first of all move to the root of the project:
+```bash
+docker compose up -d
+```
+
+3. Run another command:
+```bash
+./mvnw clean install
+```
+
+4. And the last:
+```bash
+java -jar web/target/*.jar 
+```
+
+5. Open link in your browser: [swagger-ui](http://localhost:8080/swagger-ui/index.html)
+
+6. Test endpoints with the Swagger UI 😀
+
+> In the future I will change `docker-compose.yml` file, and steps 3 and 4 would be unnecessary. Image of the application would be pulled from GitHub packages 🚀 by docker-compose script.
+

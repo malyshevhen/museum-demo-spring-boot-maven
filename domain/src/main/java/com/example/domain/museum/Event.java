@@ -15,6 +15,8 @@ import org.springframework.validation.annotation.Validated;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
+import static com.example.constraints.museum.EventConstraints.*;
+
 /**
  * Event is domain model of the museum event business object.
  *
