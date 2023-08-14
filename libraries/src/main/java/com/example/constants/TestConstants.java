@@ -6,21 +6,26 @@ import com.example.constraints.museum.EventConstraints;
 import com.example.constraints.users.UserConstraints;
 import org.apache.commons.lang3.StringUtils;
 
+import static com.example.constraints.SharedConstraints.MAX_FIELD_LENGTH;
+import static com.example.constraints.SharedConstraints.MIN_FIELD_LENGTH;
+
 public class TestConstants {
     private TestConstants() {
         throw new IllegalStateException("Utility class!");
     }
 
     public static final String EMPTY_STRING = "   ";
+    public static final String UNDERSIZED_FIELD = buildUndersizedString(MIN_FIELD_LENGTH);
+    public static final String OVERSIZED_FIELD = buildOversizedString(MAX_FIELD_LENGTH);
 
     public static class Users {
         private Users() {
             throw new IllegalStateException("Utility class");
         }
 
-        public static final String UNDERSIZED_USER_FIELD
+        public static final String UNDERSIZED_NAME_FIELD
                 = buildUndersizedString(UserConstraints.MIN_NAME_LENGTH);
-        public static final String OVERSIZED_USER_FIELD
+        public static final String OVERSIZED_NAME_FIELD
                 = buildOversizedString(UserConstraints.MAX_NAME_LENGTH);
     }
 
@@ -66,7 +71,7 @@ public class TestConstants {
     }
 
     protected static String buildUndersizedString(int length) {
-        return StringUtils.repeat("C", length - 1);
+        return length < 1 ? "" : StringUtils.repeat("C", length - 1);
     }
 
     protected static String buildOversizedString(int length) {

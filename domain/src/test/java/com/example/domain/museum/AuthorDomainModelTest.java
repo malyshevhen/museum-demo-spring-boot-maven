@@ -1,12 +1,8 @@
 package com.example.domain.museum;
 
 import com.example.constants.TestConstants;
+import com.example.domain.config.AbstractDomainModelTest;
 import com.example.domain.users.User;
-import com.example.utils.FakeModelFactory;
-import jakarta.validation.Validation;
-import jakarta.validation.Validator;
-import jakarta.validation.ValidatorFactory;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -26,21 +22,13 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  *
  * @author Evhen Malysh
  */
-class AuthorTest {
-    private Validator validator;
-
-    @BeforeEach
-    void init() {
-        try (ValidatorFactory factory = Validation.buildDefaultValidatorFactory()) {
-            validator = factory.getValidator();
-        }
-    }
+class AuthorDomainModelTest extends AbstractDomainModelTest {
 
     @DisplayName("No constraint violations with valid author")
     @Test
     void testPass() {
-        var author = FakeModelFactory.getValidAuthor();
-        var violations = validator.validate(author);
+        var author = getValidAuthor();
+        var violations = validate(author);
 
         assertTrue(violations.isEmpty());
     }
@@ -50,10 +38,10 @@ class AuthorTest {
     @NullAndEmptySource
     @MethodSource
     void invalidUsername(String username) {
-        var author = FakeModelFactory.getValidAuthor();
+        var author = getValidAuthor();
         author.setUsername(username);
 
-        var violations = validator.validate(author);
+        var violations = validate(author);
 
         assertFalse(violations.isEmpty());
     }
@@ -70,16 +58,16 @@ class AuthorTest {
     @NullSource
     @MethodSource
     void invalidUser(User user) {
-        var author = FakeModelFactory.getValidAuthor();
+        var author = getValidAuthor();
         author.setUser(user);
 
-        var violations = validator.validate(author);
+        var violations = validate(author);
 
         assertFalse(violations.isEmpty());
     }
 
     private static Stream<Arguments> invalidUser() {
-        var user = FakeModelFactory.getValidUser();
+        var user = getValidUser();
         user.setEmail("");
         return Stream.of(Arguments.of(user));
     }

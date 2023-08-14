@@ -1,10 +1,6 @@
 package com.example.domain.users;
 
-import com.example.utils.FakeModelFactory;
-import jakarta.validation.Validation;
-import jakarta.validation.Validator;
-import jakarta.validation.ValidatorFactory;
-import org.junit.jupiter.api.BeforeEach;
+import com.example.domain.config.AbstractDomainModelTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -16,8 +12,8 @@ import org.junit.jupiter.params.provider.ValueSource;
 import java.util.stream.Stream;
 
 import static com.example.constants.TestConstants.EMPTY_STRING;
-import static com.example.constants.TestConstants.Users.OVERSIZED_USER_FIELD;
-import static com.example.constants.TestConstants.Users.UNDERSIZED_USER_FIELD;
+import static com.example.constants.TestConstants.Users.OVERSIZED_NAME_FIELD;
+import static com.example.constants.TestConstants.Users.UNDERSIZED_NAME_FIELD;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -26,21 +22,13 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  *
  * @author Evhen Malysh
  */
-class UserTest {
-    private Validator validator;
-
-    @BeforeEach
-    void init() {
-        try (ValidatorFactory factory = Validation.buildDefaultValidatorFactory()) {
-            validator = factory.getValidator();
-        }
-    }
+class UserDomainModelTest extends AbstractDomainModelTest {
 
     @DisplayName("No constraint violations with valid user")
     @Test
     void testPass() {
-        var validUser = FakeModelFactory.getValidUser();
-        var violations = validator.validate(validUser);
+        var validUser = getValidUser();
+        var violations = validate(validUser);
 
         assertTrue(violations.isEmpty());
     }
@@ -50,10 +38,10 @@ class UserTest {
     @NullAndEmptySource
     @MethodSource("invalidStringFields")
     void invalidFirstnameFails(String firstname) {
-        var user = FakeModelFactory.getValidUser();
+        var user = getValidUser();
         user.setFirstName(firstname);
 
-        var violations = validator.validate(user);
+        var violations = validate(user);
 
         assertFalse(violations.isEmpty());
     }
@@ -63,10 +51,10 @@ class UserTest {
     @NullAndEmptySource
     @MethodSource("invalidStringFields")
     void invalidLastnameFails(String lastname) {
-        var user = FakeModelFactory.getValidUser();
+        var user = getValidUser();
         user.setLastName(lastname);
 
-        var violations = validator.validate(user);
+        var violations = validate(user);
 
         assertFalse(violations.isEmpty());
     }
@@ -74,8 +62,8 @@ class UserTest {
     private static Stream<Arguments> invalidStringFields() {
         return Stream.of(
                 Arguments.of(EMPTY_STRING),
-                Arguments.of(UNDERSIZED_USER_FIELD),
-                Arguments.of(OVERSIZED_USER_FIELD)
+                Arguments.of(UNDERSIZED_NAME_FIELD),
+                Arguments.of(OVERSIZED_NAME_FIELD)
         );
     }
 
@@ -84,10 +72,10 @@ class UserTest {
     @NullAndEmptySource
     @ValueSource(strings = {"   ", "email", "email@", "@email", "email@gmail", "@gmail.com"})
     void invalidEmailFails(String email) {
-        var user = FakeModelFactory.getValidUser();
+        var user = getValidUser();
         user.setEmail(email);
 
-        var violations = validator.validate(user);
+        var violations = validate(user);
 
         assertFalse(violations.isEmpty());
     }
@@ -97,10 +85,10 @@ class UserTest {
     @NullAndEmptySource
     @ValueSource(strings = {"   ", "noDigits", "sh0rt"})
     void invalidPasswordFails(String password) {
-        var user = FakeModelFactory.getValidUser();
+        var user = getValidUser();
         user.setPassword(password);
 
-        var violations = validator.validate(user);
+        var violations = validate(user);
 
         assertFalse(violations.isEmpty());
     }

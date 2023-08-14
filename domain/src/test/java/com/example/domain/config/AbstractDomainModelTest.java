@@ -1,26 +1,45 @@
-package com.example.utils;
+package com.example.domain.config;
 
 import com.example.domain.museum.Article;
 import com.example.domain.museum.Author;
 import com.example.domain.museum.Event;
 import com.example.domain.users.User;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.Validation;
+import jakarta.validation.Validator;
+import jakarta.validation.ValidatorFactory;
 import org.instancio.Instancio;
 import org.instancio.Model;
+import org.instancio.junit.InstancioExtension;
+import org.instancio.junit.WithSettings;
 import org.instancio.settings.Keys;
 import org.instancio.settings.Settings;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.extension.ExtendWith;
+
+import java.util.Set;
 
 import static org.instancio.Select.field;
 
-/**
- * Utility class for generating instancio models
- *
- * @author Evhen Malysh
- */
-public class FakeModelFactory {
+@ExtendWith(InstancioExtension.class)
+public class AbstractDomainModelTest {
+    private Validator validator;
 
+    @BeforeEach
+    void init() {
+        try (ValidatorFactory factory = Validation.buildDefaultValidatorFactory()) {
+            validator = factory.getValidator();
+        }
+    }
+
+    @WithSettings
     private static final Settings settings = Settings.create()
             .set(Keys.BEAN_VALIDATION_ENABLED, true)
             .lock();
+
+    protected <T> Set<ConstraintViolation<T>> validate(T object) {
+        return validator.validate(object);
+    }
 
     public static User getValidUser() {
         return Instancio.of(getUserModel())

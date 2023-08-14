@@ -1,11 +1,7 @@
 package com.example.domain.museum;
 
 import com.example.constants.TestConstants;
-import com.example.utils.FakeModelFactory;
-import jakarta.validation.Validation;
-import jakarta.validation.Validator;
-import jakarta.validation.ValidatorFactory;
-import org.junit.jupiter.api.BeforeEach;
+import com.example.domain.config.AbstractDomainModelTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -24,22 +20,13 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  *
  * @author Evhen Malysh
  */
-class EventTest {
-    private Validator validator;
-
-    @BeforeEach
-    void init() {
-        try (ValidatorFactory factory = Validation.buildDefaultValidatorFactory()) {
-            validator = factory.getValidator();
-        }
-    }
-
+class EventDomainModelTest extends AbstractDomainModelTest {
 
     @DisplayName("No constraint violations with valid event")
     @Test
     void testPass() {
-        var event = FakeModelFactory.getValidEvent();
-        var violations = validator.validate(event);
+        var event = getValidEvent();
+        var violations = validate(event);
 
         assertTrue(violations.isEmpty());
     }
@@ -48,10 +35,10 @@ class EventTest {
     @ParameterizedTest
     @MethodSource
     void invalidTitle(String title) {
-        var event = FakeModelFactory.getValidEvent();
+        var event = getValidEvent();
         event.setTitle(title);
 
-        var violations = validator.validate(event);
+        var violations = validate(event);
 
         assertFalse(violations.isEmpty());
     }
@@ -67,10 +54,10 @@ class EventTest {
     @ParameterizedTest
     @MethodSource
     void invalidContent(String body) {
-        var event = FakeModelFactory.getValidEvent();
+        var event = getValidEvent();
         event.setContent(body);
 
-        var violations = validator.validate(event);
+        var violations = validate(event);
 
         assertFalse(violations.isEmpty());
     }
@@ -87,16 +74,16 @@ class EventTest {
     @ParameterizedTest
     @MethodSource
     void invalidAuthor(Author author) {
-        var event = FakeModelFactory.getValidEvent();
+        var event = getValidEvent();
         event.setAuthor(author);
 
-        var violations = validator.validate(event);
+        var violations = validate(event);
 
         assertFalse(violations.isEmpty());
     }
 
     private static Stream<Arguments> invalidAuthor() {
-        var author = FakeModelFactory.getValidAuthor();
+        var author = getValidAuthor();
         author.setUsername("");
         return Stream.of(Arguments.of(author));
     }
@@ -104,10 +91,10 @@ class EventTest {
     @ParameterizedTest
     @MethodSource
     void invalidTiming(LocalDateTime timing) {
-        var event = FakeModelFactory.getValidEvent();
+        var event = getValidEvent();
         event.setTiming(timing);
 
-        var violations = validator.validate(event);
+        var violations = validate(event);
 
         assertFalse(violations.isEmpty());
     }

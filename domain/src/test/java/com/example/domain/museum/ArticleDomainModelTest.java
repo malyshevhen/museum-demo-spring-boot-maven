@@ -1,11 +1,7 @@
 package com.example.domain.museum;
 
 import com.example.constants.TestConstants;
-import com.example.utils.FakeModelFactory;
-import jakarta.validation.Validation;
-import jakarta.validation.Validator;
-import jakarta.validation.ValidatorFactory;
-import org.junit.jupiter.api.BeforeEach;
+import com.example.domain.config.AbstractDomainModelTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -22,21 +18,13 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  *
  * @author Evhen Malysh
  */
-class ArticleTest {
-    private Validator validator;
-
-    @BeforeEach
-    void init() {
-        try (ValidatorFactory factory = Validation.buildDefaultValidatorFactory()) {
-            validator = factory.getValidator();
-        }
-    }
+class ArticleDomainModelTest extends AbstractDomainModelTest {
 
     @DisplayName("No constraint violations with valid article")
     @Test
     void testPass() {
-        var article = FakeModelFactory.getValidArticle();
-        var violations = validator.validate(article);
+        var article = getValidArticle();
+        var violations = validate(article);
 
         assertTrue(violations.isEmpty());
     }
@@ -45,10 +33,10 @@ class ArticleTest {
     @ParameterizedTest
     @MethodSource
     void invalidTitle(String title) {
-        var article = FakeModelFactory.getValidArticle();
+        var article = getValidArticle();
         article.setTitle(title);
 
-        var violations = validator.validate(article);
+        var violations = validate(article);
 
         assertFalse(violations.isEmpty());
     }
@@ -64,10 +52,10 @@ class ArticleTest {
     @ParameterizedTest
     @MethodSource
     void invalidContent(String body) {
-        var article = FakeModelFactory.getValidArticle();
+        var article = getValidArticle();
         article.setContent(body);
 
-        var violations = validator.validate(article);
+        var violations = validate(article);
 
         assertFalse(violations.isEmpty());
     }
@@ -84,16 +72,16 @@ class ArticleTest {
     @ParameterizedTest
     @MethodSource
     void invalidAuthor(Author author) {
-        var article = FakeModelFactory.getValidArticle();
+        var article = getValidArticle();
         article.setAuthor(author);
 
-        var violations = validator.validate(article);
+        var violations = validate(article);
 
         assertFalse(violations.isEmpty());
     }
 
     private static Stream<Arguments> invalidAuthor() {
-        var author = FakeModelFactory.getValidAuthor();
+        var author = getValidAuthor();
         author.setUsername("");
         return Stream.of(Arguments.of(author));
     }
