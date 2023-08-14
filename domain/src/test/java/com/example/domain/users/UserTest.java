@@ -1,17 +1,12 @@
 package com.example.domain.users;
 
+import com.example.utils.FakeModelFactory;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
 import jakarta.validation.ValidatorFactory;
-import org.instancio.Instancio;
-import org.instancio.junit.InstancioExtension;
-import org.instancio.junit.WithSettings;
-import org.instancio.settings.Keys;
-import org.instancio.settings.Settings;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -20,10 +15,9 @@ import org.junit.jupiter.params.provider.ValueSource;
 
 import java.util.stream.Stream;
 
-import static com.example.constants.TestConstants.*;
+import static com.example.constants.TestConstants.EMPTY_STRING;
 import static com.example.constants.TestConstants.Users.OVERSIZED_USER_FIELD;
 import static com.example.constants.TestConstants.Users.UNDERSIZED_USER_FIELD;
-import static com.example.utils.InstancioDomainModels.getUserModel;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -32,13 +26,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  *
  * @author Evhen Malysh
  */
-@ExtendWith(InstancioExtension.class)
 class UserTest {
     private Validator validator;
-
-    @WithSettings
-    private final Settings settings = Settings.create()
-            .set(Keys.BEAN_VALIDATION_ENABLED, true);
 
     @BeforeEach
     void init() {
@@ -50,7 +39,7 @@ class UserTest {
     @DisplayName("No constraint violations with valid user")
     @Test
     void testPass() {
-        var validUser = Instancio.of(getUserModel()).create();
+        var validUser = FakeModelFactory.getValidUser();
         var violations = validator.validate(validUser);
 
         assertTrue(violations.isEmpty());
@@ -61,7 +50,7 @@ class UserTest {
     @NullAndEmptySource
     @MethodSource("invalidStringFields")
     void invalidFirstnameFails(String firstname) {
-        var user = Instancio.of(getUserModel()).create();
+        var user = FakeModelFactory.getValidUser();
         user.setFirstName(firstname);
 
         var violations = validator.validate(user);
@@ -74,7 +63,7 @@ class UserTest {
     @NullAndEmptySource
     @MethodSource("invalidStringFields")
     void invalidLastnameFails(String lastname) {
-        var user = Instancio.of(getUserModel()).create();
+        var user = FakeModelFactory.getValidUser();
         user.setLastName(lastname);
 
         var violations = validator.validate(user);
@@ -95,7 +84,7 @@ class UserTest {
     @NullAndEmptySource
     @ValueSource(strings = {"   ", "email", "email@", "@email", "email@gmail", "@gmail.com"})
     void invalidEmailFails(String email) {
-        var user = Instancio.of(getUserModel()).create();
+        var user = FakeModelFactory.getValidUser();
         user.setEmail(email);
 
         var violations = validator.validate(user);
@@ -108,7 +97,7 @@ class UserTest {
     @NullAndEmptySource
     @ValueSource(strings = {"   ", "noDigits", "sh0rt"})
     void invalidPasswordFails(String password) {
-        var user = Instancio.of(getUserModel()).create();
+        var user = FakeModelFactory.getValidUser();
         user.setPassword(password);
 
         var violations = validator.validate(user);

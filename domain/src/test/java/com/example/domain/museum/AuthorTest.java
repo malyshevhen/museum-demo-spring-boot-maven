@@ -2,18 +2,13 @@ package com.example.domain.museum;
 
 import com.example.constants.TestConstants;
 import com.example.domain.users.User;
+import com.example.utils.FakeModelFactory;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
 import jakarta.validation.ValidatorFactory;
-import org.instancio.Instancio;
-import org.instancio.junit.InstancioExtension;
-import org.instancio.junit.WithSettings;
-import org.instancio.settings.Keys;
-import org.instancio.settings.Settings;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -22,10 +17,7 @@ import org.junit.jupiter.params.provider.NullSource;
 
 import java.util.stream.Stream;
 
-import static com.example.constants.TestConstants.*;
-import static com.example.utils.InstancioDomainModels.getAuthorModel;
-import static com.example.utils.InstancioDomainModels.getUserModel;
-import static org.instancio.Select.field;
+import static com.example.constants.TestConstants.EMPTY_STRING;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -34,13 +26,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  *
  * @author Evhen Malysh
  */
-@ExtendWith(InstancioExtension.class)
 class AuthorTest {
     private Validator validator;
-
-    @WithSettings
-    private final Settings settings = Settings.create()
-            .set(Keys.BEAN_VALIDATION_ENABLED, true);
 
     @BeforeEach
     void init() {
@@ -52,7 +39,7 @@ class AuthorTest {
     @DisplayName("No constraint violations with valid author")
     @Test
     void testPass() {
-        var author = Instancio.of(getAuthorModel()).create();
+        var author = FakeModelFactory.getValidAuthor();
         var violations = validator.validate(author);
 
         assertTrue(violations.isEmpty());
@@ -63,7 +50,7 @@ class AuthorTest {
     @NullAndEmptySource
     @MethodSource
     void invalidUsername(String username) {
-        var author = Instancio.of(getAuthorModel()).create();
+        var author = FakeModelFactory.getValidAuthor();
         author.setUsername(username);
 
         var violations = validator.validate(author);
@@ -83,7 +70,7 @@ class AuthorTest {
     @NullSource
     @MethodSource
     void invalidUser(User user) {
-        var author = Instancio.of(getAuthorModel()).create();
+        var author = FakeModelFactory.getValidAuthor();
         author.setUser(user);
 
         var violations = validator.validate(author);
@@ -92,11 +79,8 @@ class AuthorTest {
     }
 
     private static Stream<Arguments> invalidUser() {
-        return Stream.of(
-                Arguments.of(
-                        Instancio.of(getUserModel())
-                                .set(field("email"), EMPTY_STRING)
-                                .create())
-        );
+        var user = FakeModelFactory.getValidUser();
+        user.setEmail("");
+        return Stream.of(Arguments.of(user));
     }
 }

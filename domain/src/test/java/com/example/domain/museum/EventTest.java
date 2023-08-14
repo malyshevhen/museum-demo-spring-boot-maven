@@ -1,18 +1,13 @@
 package com.example.domain.museum;
 
 import com.example.constants.TestConstants;
+import com.example.utils.FakeModelFactory;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
 import jakarta.validation.ValidatorFactory;
-import org.instancio.Instancio;
-import org.instancio.junit.InstancioExtension;
-import org.instancio.junit.WithSettings;
-import org.instancio.settings.Keys;
-import org.instancio.settings.Settings;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -20,10 +15,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import java.time.LocalDateTime;
 import java.util.stream.Stream;
 
-import static com.example.constants.TestConstants.*;
-import static com.example.utils.InstancioDomainModels.getEventModel;
-import static com.example.utils.InstancioDomainModels.getAuthorModel;
-import static org.instancio.Select.field;
+import static com.example.constants.TestConstants.EMPTY_STRING;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -32,13 +24,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  *
  * @author Evhen Malysh
  */
-@ExtendWith(InstancioExtension.class)
 class EventTest {
     private Validator validator;
-
-    @WithSettings
-    private final Settings settings = Settings.create()
-            .set(Keys.BEAN_VALIDATION_ENABLED, true);
 
     @BeforeEach
     void init() {
@@ -51,7 +38,7 @@ class EventTest {
     @DisplayName("No constraint violations with valid event")
     @Test
     void testPass() {
-        var event = Instancio.of(getEventModel()).create();
+        var event = FakeModelFactory.getValidEvent();
         var violations = validator.validate(event);
 
         assertTrue(violations.isEmpty());
@@ -61,7 +48,7 @@ class EventTest {
     @ParameterizedTest
     @MethodSource
     void invalidTitle(String title) {
-        var event = Instancio.of(getEventModel()).create();
+        var event = FakeModelFactory.getValidEvent();
         event.setTitle(title);
 
         var violations = validator.validate(event);
@@ -80,7 +67,7 @@ class EventTest {
     @ParameterizedTest
     @MethodSource
     void invalidContent(String body) {
-        var event = Instancio.of(getEventModel()).create();
+        var event = FakeModelFactory.getValidEvent();
         event.setContent(body);
 
         var violations = validator.validate(event);
@@ -100,7 +87,7 @@ class EventTest {
     @ParameterizedTest
     @MethodSource
     void invalidAuthor(Author author) {
-        var event = Instancio.of(getEventModel()).create();
+        var event = FakeModelFactory.getValidEvent();
         event.setAuthor(author);
 
         var violations = validator.validate(event);
@@ -109,19 +96,15 @@ class EventTest {
     }
 
     private static Stream<Arguments> invalidAuthor() {
-
-        return Stream.of(
-                Arguments.of(
-                        Instancio.of(getAuthorModel())
-                                .set(field("username"), EMPTY_STRING)
-                                .create())
-        );
+        var author = FakeModelFactory.getValidAuthor();
+        author.setUsername("");
+        return Stream.of(Arguments.of(author));
     }
 
     @ParameterizedTest
     @MethodSource
     void invalidTiming(LocalDateTime timing) {
-        var event = Instancio.of(getEventModel()).create();
+        var event = FakeModelFactory.getValidEvent();
         event.setTiming(timing);
 
         var violations = validator.validate(event);

@@ -1,27 +1,19 @@
 package com.example.domain.museum;
 
 import com.example.constants.TestConstants;
+import com.example.utils.FakeModelFactory;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
 import jakarta.validation.ValidatorFactory;
-import org.instancio.Instancio;
-import org.instancio.junit.InstancioExtension;
-import org.instancio.junit.WithSettings;
-import org.instancio.settings.Keys;
-import org.instancio.settings.Settings;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.stream.Stream;
 
-import static com.example.utils.InstancioDomainModels.getArticleModel;
-import static com.example.utils.InstancioDomainModels.getAuthorModel;
-import static org.instancio.Select.field;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -30,13 +22,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  *
  * @author Evhen Malysh
  */
-@ExtendWith(InstancioExtension.class)
 class ArticleTest {
     private Validator validator;
-
-    @WithSettings
-    private final Settings settings = Settings.create()
-            .set(Keys.BEAN_VALIDATION_ENABLED, true);
 
     @BeforeEach
     void init() {
@@ -48,7 +35,7 @@ class ArticleTest {
     @DisplayName("No constraint violations with valid article")
     @Test
     void testPass() {
-        var article = Instancio.of(getArticleModel()).create();
+        var article = FakeModelFactory.getValidArticle();
         var violations = validator.validate(article);
 
         assertTrue(violations.isEmpty());
@@ -58,7 +45,7 @@ class ArticleTest {
     @ParameterizedTest
     @MethodSource
     void invalidTitle(String title) {
-        var article = Instancio.of(getArticleModel()).create();
+        var article = FakeModelFactory.getValidArticle();
         article.setTitle(title);
 
         var violations = validator.validate(article);
@@ -77,7 +64,7 @@ class ArticleTest {
     @ParameterizedTest
     @MethodSource
     void invalidContent(String body) {
-        var article = Instancio.of(getArticleModel()).create();
+        var article = FakeModelFactory.getValidArticle();
         article.setContent(body);
 
         var violations = validator.validate(article);
@@ -97,7 +84,7 @@ class ArticleTest {
     @ParameterizedTest
     @MethodSource
     void invalidAuthor(Author author) {
-        var article = Instancio.of(getArticleModel()).create();
+        var article = FakeModelFactory.getValidArticle();
         article.setAuthor(author);
 
         var violations = validator.validate(article);
@@ -106,12 +93,8 @@ class ArticleTest {
     }
 
     private static Stream<Arguments> invalidAuthor() {
-
-        return Stream.of(
-                Arguments.of(
-                        Instancio.of(getAuthorModel())
-                                .set(field("username"), TestConstants.EMPTY_STRING)
-                                .create())
-        );
+        var author = FakeModelFactory.getValidAuthor();
+        author.setUsername("");
+        return Stream.of(Arguments.of(author));
     }
 }
