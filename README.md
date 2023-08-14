@@ -63,15 +63,15 @@ It is a back-end part of the abstract Museum Website and provides REST endpoints
 │           ├── java
 │           │   └── com
 │           │       └── example
-│           │           ├── domain
-│           │           │   ├── museum
-│           │           │   │   ├── ArticleTest.java
-│           │           │   │   ├── AuthorTest.java
-│           │           │   │   └── EventTest.java
-│           │           │   └── users
-│           │           │       └── UserTest.java
-│           │           └── utils
-│           │               └── InstancioDomainModels.java
+│           │           └── domain
+│           │               ├── config
+│           │               │   └── AbstractDomainModelTest.java
+│           │               ├── museum
+│           │               │   ├── ArticleDomainModelTest.java
+│           │               │   ├── AuthorDomainModelTest.java
+│           │               │   └── EventDomainModelTest.java
+│           │               └── users
+│           │                   └── UserDomainModelTest.java
 │           └── resources
 │               └── application.yml
 ├── dto
@@ -104,10 +104,15 @@ It is a back-end part of the abstract Museum Website and provides REST endpoints
 │               └── com
 │                   └── example
 │                       └── dto
-│                           ├── users
-│                           │   └── UserRegistrationFormTest.java
-│                           └── utils
-│                               └── InstancioDTOModels.java
+│                           ├── config
+│                           │   └── AbstractDtoTest.java
+│                           ├── museum
+│                           │   └── author
+│                           │       ├── AuthorRegistrationFormDtoTest.java
+│                           │       └── AuthorShortResponseDtoTest.java
+│                           └── users
+│                               ├── UserRegistrationFormDtoTest.java
+│                               └── UserShortResponseDtoTest.java
 ├── libraries
 │   ├── pom.xml
 │   └── src
@@ -118,7 +123,6 @@ It is a back-end part of the abstract Museum Website and provides REST endpoints
 │           │           ├── constants
 │           │           │   └── TestConstants.java
 │           │           └── constraints
-│           │               ├── domain
 │           │               ├── museum
 │           │               │   ├── ArticleConstraints.java
 │           │               │   ├── AuthorConstraints.java
