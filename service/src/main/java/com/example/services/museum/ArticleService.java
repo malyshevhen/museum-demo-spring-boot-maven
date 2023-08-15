@@ -4,6 +4,10 @@ import com.example.dto.museum.article.ArticlePublishingForm;
 import com.example.dto.museum.article.ArticleWithContent;
 import com.example.dto.museum.article.ArticleWithoutContent;
 import com.example.services.museum.exceptions.ArticleNotFoundException;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 
 import java.util.List;
 
@@ -20,7 +24,7 @@ public interface ArticleService {
      * @param id The ID of the article.
      * @return The article with the given ID, or null if not found.
      */
-    ArticleWithContent getById(Long id);
+    ArticleWithContent getById(@NotNull @Positive Long id);
 
     /**
      * Create a new article.
@@ -29,7 +33,7 @@ public interface ArticleService {
      * @return The created article.
      * @throws IllegalArgumentException if the article is null.
      */
-    ArticleWithContent save(ArticlePublishingForm article);
+    ArticleWithContent save(@NotNull @Valid ArticlePublishingForm article);
 
     /**
      * Update an existing article title.
@@ -39,14 +43,16 @@ public interface ArticleService {
      * @return The updated article.
      * @throws ArticleNotFoundException if the article is null or not found.
      */
-    ArticleWithContent update(Long id, String title, String body);
+    ArticleWithContent update(@NotNull @Positive Long id,
+                              @NotNull @NotBlank String title,
+                              @NotNull @NotBlank String body);
 
     /**
      * Get a list of article DTOs with article content by author ID.
      *
      * @return ArticleWithContent List of DTOs with article content
      */
-    List<ArticleWithContent> getAllWithBodyByAuthorId(Long authorId);
+    List<ArticleWithContent> getAllWithBodyByAuthorId(@NotNull @Positive Long authorId);
 
     /**
      * Get a list of all article DTOs without article content.
@@ -60,5 +66,5 @@ public interface ArticleService {
      *
      * @param id The ID of the article to delete.
      */
-    void deleteById(Long id);
+    void deleteById(@NotNull @Positive Long id);
 }

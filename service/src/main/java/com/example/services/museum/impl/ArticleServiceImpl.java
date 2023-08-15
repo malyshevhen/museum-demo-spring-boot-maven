@@ -8,10 +8,6 @@ import com.example.repositories.museum.ArticleRepository;
 import com.example.repositories.museum.AuthorRepository;
 import com.example.services.museum.ArticleService;
 import com.example.services.museum.exceptions.ArticleNotFoundException;
-import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,7 +23,6 @@ import java.util.function.Supplier;
  */
 @Service
 @Validated
-@Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class ArticleServiceImpl implements ArticleService {
     public static final String ARTICLE_WITH_ID_NOT_FOUND = "Article with ID: %d not found.";
@@ -36,8 +31,7 @@ public class ArticleServiceImpl implements ArticleService {
     private final AuthorRepository authorRepository;
 
     @Override
-    public List<ArticleWithContent> getAllWithBodyByAuthorId(
-            @NotNull @Positive final Long authorId) {
+    public List<ArticleWithContent> getAllWithBodyByAuthorId(final Long authorId) {
         var articles = articleRepository.findAllWithBodyByAuthorId(authorId);
         if (articles.isEmpty()) {
             throw new ArticleNotFoundException("No articles found");
@@ -61,7 +55,7 @@ public class ArticleServiceImpl implements ArticleService {
      * @return The article with the given ID, or null if not found.
      */
     @Override
-    public ArticleWithContent getById(@NotNull @Positive final Long id) {
+    public ArticleWithContent getById(final Long id) {
         return articleRepository.findArticleWithContentById(id)
                 .orElseThrow(getArticleNotFoundExceptionSupplier(id));
     }
@@ -75,7 +69,7 @@ public class ArticleServiceImpl implements ArticleService {
     @Override
     @Transactional
     public ArticleWithContent save(
-            @NotNull @Valid final ArticlePublishingForm publishingForm) {
+            final ArticlePublishingForm publishingForm) {
         var author = authorRepository.findById(publishingForm.authorId())
                 .orElseThrow();
         var article = new Article(
@@ -98,10 +92,7 @@ public class ArticleServiceImpl implements ArticleService {
      */
     @Override
     @Transactional
-    public ArticleWithContent update(
-            @NotNull @Positive final Long id,
-            @NotNull @NotBlank final String title,
-            @NotNull @NotBlank final String body) {
+    public ArticleWithContent update(Long id, String title, String body) {
         if (isNotPresent(id)) {
             throw new ArticleNotFoundException(
                     String.format(ARTICLE_WITH_ID_NOT_FOUND, id));
@@ -117,7 +108,7 @@ public class ArticleServiceImpl implements ArticleService {
      */
     @Override
     @Transactional
-    public void deleteById(@NotNull @Positive final Long id) {
+    public void deleteById(final Long id) {
         if (isNotPresent(id)) {
             throw new ArticleNotFoundException(
                     String.format(ARTICLE_WITH_ID_NOT_FOUND, id));

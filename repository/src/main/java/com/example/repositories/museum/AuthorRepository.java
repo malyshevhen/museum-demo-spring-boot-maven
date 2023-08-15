@@ -21,7 +21,8 @@ public interface AuthorRepository extends JpaRepository<Author, Long> {
      * @return AuthorShortResponse list of all authors.
      */
     @Query("""
-            SELECT new com.example.dto.museum.author.AuthorShortResponse(
+            SELECT new com.example.dto.museum.author.AuthorShortResponse
+            (
                 a.id,
                 a.username,
                 a.user.firstName,
@@ -38,7 +39,8 @@ public interface AuthorRepository extends JpaRepository<Author, Long> {
      * @return AuthorShortResponse by given ID.
      */
     @Query("""
-            SELECT new com.example.dto.museum.author.AuthorShortResponse(
+            SELECT new com.example.dto.museum.author.AuthorShortResponse
+            (
                 a.id,
                 a.username,
                 a.user.firstName,

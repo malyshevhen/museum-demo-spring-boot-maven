@@ -2,6 +2,10 @@ package com.example.services.museum;
 
 import com.example.dto.museum.author.AuthorRegistrationForm;
 import com.example.dto.museum.author.AuthorShortResponse;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 
 import java.util.List;
 
@@ -25,7 +29,7 @@ public interface AuthorService {
      * @param id The ID of the author to retrieve.
      * @return The Author object representing the requested author.
      */
-    AuthorShortResponse getById(Long id);
+    AuthorShortResponse getById(@NotNull @Positive final Long id);
 
     /**
      * Create a new author.
@@ -33,7 +37,7 @@ public interface AuthorService {
      * @param authorRegistrationForm The Author object containing the details of the new author.
      * @return The created Author object.
      */
-    AuthorShortResponse save(AuthorRegistrationForm authorRegistrationForm);
+    AuthorShortResponse save(@NotNull @Valid AuthorRegistrationForm authorRegistrationForm);
 
     /**
      * Update an existing author`s username.
@@ -42,13 +46,14 @@ public interface AuthorService {
      * @param username The author`s username to update.
      * @return The updated Author object.
      */
-    AuthorShortResponse updateUsername(Long id, String username);
+    AuthorShortResponse updateUsername(@NotNull @Positive Long id,
+                                       @NotNull @NotBlank String username);
 
     /**
      * Delete an author by ID.
      *
      * @param id The ID of the author to delete.
      */
-    void deleteById(Long id);
+    void deleteById(@NotNull @Positive Long id);
 }
 

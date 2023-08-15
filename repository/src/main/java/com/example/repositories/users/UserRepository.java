@@ -23,7 +23,9 @@ public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findByEmail(String email);
 
     @Query("""
-            SELECT com.example.dto.users.UserShortResponse(
+            SELECT new com.example.dto.users.UserShortResponse
+            (
+                u.id,
                 u.firstName,
                 u.lastName,
                 u.email
@@ -33,7 +35,9 @@ public interface UserRepository extends JpaRepository<User, Long> {
     List<UserShortResponse> findAllDtos();
 
     @Query("""
-            SELECT com.example.dto.users.UserShortResponse(
+            SELECT new com.example.dto.users.UserShortResponse
+            (
+                u.id,
                 u.firstName,
                 u.lastName,
                 u.email

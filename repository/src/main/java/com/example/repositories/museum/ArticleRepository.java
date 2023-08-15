@@ -31,7 +31,8 @@ public interface ArticleRepository extends JpaRepository<Article, Long> {
 
     }
     @Query("""
-            SELECT new com.example.repositories.museum.ArticleRepository$ArticleDbRowWithContent(
+            SELECT new com.example.repositories.museum.ArticleRepository$ArticleDbRowWithContent
+            (
                 a.id,
                 a.title,
                 a.content,
@@ -82,7 +83,8 @@ public interface ArticleRepository extends JpaRepository<Article, Long> {
 
     }
     @Query("""
-            SELECT new com.example.repositories.museum.ArticleRepository$ArticleDbRowWithoutContent(
+            SELECT new com.example.repositories.museum.ArticleRepository$ArticleDbRowWithoutContent
+            (
                 a.id,
                 a.title,
                 a.author.id,
@@ -113,7 +115,8 @@ public interface ArticleRepository extends JpaRepository<Article, Long> {
     }
 
     @Query("""
-            SELECT new com.example.repositories.museum.ArticleRepository$ArticleDbRowWithContent(
+            SELECT new com.example.repositories.museum.ArticleRepository$ArticleDbRowWithContent
+            (
                 a.id,
                 a.title,
                 a.content,

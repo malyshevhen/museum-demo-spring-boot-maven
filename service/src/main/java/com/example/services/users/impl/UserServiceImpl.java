@@ -8,9 +8,6 @@ import com.example.repositories.users.UserRepository;
 import com.example.services.users.UserService;
 import com.example.services.users.exceptions.UserAlreadyExistsException;
 import com.example.services.users.exceptions.UserNotFoundException;
-import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -63,7 +60,7 @@ public class UserServiceImpl implements UserService {
      * @return UserShortResponse representing the requested user.
      */
     @Override
-    public UserShortResponse getById(@NotNull @Positive final Long id) {
+    public UserShortResponse getById(final Long id) {
         return userRepository.findDtoById(id)
                 .orElseThrow(getUserNotFoundExceptionSupplier(id));
     }
@@ -76,8 +73,7 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     @Transactional
-    public UserShortResponse save(
-            @NotNull @Valid final UserRegistrationForm registrationForm) {
+    public UserShortResponse save(final UserRegistrationForm registrationForm) {
         var email = registrationForm.email();
         if (isPresent(email)) {
             throw new UserAlreadyExistsException(
@@ -104,15 +100,13 @@ public class UserServiceImpl implements UserService {
     /**
      * Update an existing user`s address.
      *
-     * @param id   The ID of the user to update.
+     * @param id      The ID of the user to update.
      * @param address The user`s address to update.
      * @return The updated user.
      */
     @Override
     @Transactional
-    public UserShortResponse updateAddress(
-            @NotNull @Positive final Long id,
-            @NotNull @Valid final Address address) {
+    public UserShortResponse updateAddress(final Long id, final Address address) {
         var existingUser = userRepository.findById(id)
                 .orElseThrow(getUserNotFoundExceptionSupplier(id));
         existingUser.setAddress(address);
@@ -127,7 +121,7 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     @Transactional
-    public void deleteById(@NotNull @Positive final Long id) {
+    public void deleteById(final Long id) {
         userRepository.deleteById(id);
     }
 

@@ -9,10 +9,6 @@ import com.example.services.museum.AuthorService;
 import com.example.services.museum.exceptions.AuthorAlreadyExistException;
 import com.example.services.museum.exceptions.AuthorNotFoundException;
 import com.example.services.users.exceptions.UserNotFoundException;
-import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,7 +24,6 @@ import java.util.function.Supplier;
  */
 @Service
 @Validated
-@Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class AuthorServiceImpl implements AuthorService {
 
@@ -67,7 +62,7 @@ public class AuthorServiceImpl implements AuthorService {
      * @throws AuthorAlreadyExistException if Author with given users ID already exists.
      */
     @Override
-    public AuthorShortResponse getById(@NotNull @Positive final Long id) {
+    public AuthorShortResponse getById(final Long id) {
         return authorRepository.findAuthorById(id)
                 .orElseThrow(getAuthorNotFoundExceptionSupplier(id));
     }
@@ -83,7 +78,7 @@ public class AuthorServiceImpl implements AuthorService {
     @Override
     @Transactional
     public AuthorShortResponse save(
-            @NotNull @Valid final AuthorRegistrationForm authorRegistrationForm) {
+            final AuthorRegistrationForm authorRegistrationForm) {
         var username = authorRegistrationForm.username();
         var userId = authorRegistrationForm.userId();
         if (isPresent(username) || isPresent(userId)) {
@@ -106,9 +101,7 @@ public class AuthorServiceImpl implements AuthorService {
      */
     @Override
     @Transactional
-    public AuthorShortResponse updateUsername(
-            @NotNull @Positive final Long id,
-            @NotNull @NotBlank final String username) {
+    public AuthorShortResponse updateUsername(final Long id, final String username) {
         if (!isPresent(id)) {
             throw new AuthorNotFoundException(
                     String.format(AUTHOR_WITH_ID_NOT_FOUND, id));
@@ -125,7 +118,7 @@ public class AuthorServiceImpl implements AuthorService {
      */
     @Override
     @Transactional
-    public void deleteById(@NotNull @Positive final Long id) {
+    public void deleteById(final Long id) {
         if (!isPresent(id)) {
             throw new AuthorNotFoundException(
                     String.format(AUTHOR_WITH_ID_NOT_FOUND, id));

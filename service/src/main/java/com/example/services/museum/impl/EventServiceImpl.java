@@ -9,9 +9,6 @@ import com.example.repositories.museum.EventRepository;
 import com.example.services.museum.EventService;
 import com.example.services.museum.exceptions.AuthorNotFoundException;
 import com.example.services.museum.exceptions.EventNotFoundException;
-import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,7 +24,6 @@ import java.util.function.Supplier;
  */
 @Service
 @Validated
-@Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class EventServiceImpl implements EventService {
 
@@ -59,7 +55,7 @@ public class EventServiceImpl implements EventService {
      *                                is not found.
      */
     @Override
-    public EventWithContent getById(@NotNull @Positive final Long id) {
+    public EventWithContent getById(final Long id) {
         return eventRepository.findEventWithContentById(id)
                 .orElseThrow(getEventNotFoundExceptionSupplier(id));
     }
@@ -74,7 +70,7 @@ public class EventServiceImpl implements EventService {
      */
     @Override
     @Transactional
-    public EventWithContent save(@NotNull @Valid final EventPublishingForm form) {
+    public EventWithContent save(final EventPublishingForm form) {
         var authorId = form.authorId();
         var author = authorRepository.findById(authorId)
                 .orElseThrow(() -> new AuthorNotFoundException(

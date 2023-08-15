@@ -15,7 +15,8 @@ import java.util.Optional;
 public interface EventRepository extends JpaRepository<Event, Long> {
 
     @Query("""
-            SELECT new com.example.dto.museum.event.EventWithoutContent(
+            SELECT new com.example.dto.museum.event.EventWithoutContent
+            (
                 e.id,
                 e.title,
                 e.timing,
@@ -29,7 +30,8 @@ public interface EventRepository extends JpaRepository<Event, Long> {
     List<EventWithoutContent> findAllEventsWithoutContent();
 
     @Query("""
-            SELECT new com.example.dto.museum.event.EventWithContent(
+            SELECT new com.example.dto.museum.event.EventWithContent
+            (
                 e.id,
                 e.title,
                 e.content,

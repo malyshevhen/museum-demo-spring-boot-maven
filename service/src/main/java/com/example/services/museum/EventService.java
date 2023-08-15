@@ -4,6 +4,9 @@ import com.example.dto.museum.event.EventPublishingForm;
 import com.example.dto.museum.event.EventWithContent;
 import com.example.dto.museum.event.EventWithoutContent;
 import com.example.services.museum.exceptions.EventNotFoundException;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 
 import java.util.List;
 
@@ -29,7 +32,7 @@ public interface EventService {
      * @throws EventNotFoundException if the event with the given
      *                                ID is not found.
      */
-    EventWithContent getById(Long id);
+    EventWithContent getById(@NotNull @Positive Long id);
 
     /**
      * Create a new event.
@@ -38,7 +41,7 @@ public interface EventService {
      * @return The created event.
      * @throws IllegalArgumentException if the event is null.
      */
-    EventWithContent save(EventPublishingForm event);
+    EventWithContent save(@NotNull @Valid EventPublishingForm event);
 
     /**
      * Delete an event by its ID.
@@ -46,5 +49,5 @@ public interface EventService {
      * @param id The ID of the event to delete.
      * @throws IllegalArgumentException if the event is not found.
      */
-    void deleteById(Long id);
+    void deleteById(@NotNull @Positive Long id);
 }
