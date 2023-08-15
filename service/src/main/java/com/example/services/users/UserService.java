@@ -1,7 +1,6 @@
 package com.example.services.users;
 
 import com.example.domain.users.Address;
-import com.example.domain.users.User;
 import com.example.dto.users.UserRegistrationForm;
 import com.example.dto.users.UserShortResponse;
 

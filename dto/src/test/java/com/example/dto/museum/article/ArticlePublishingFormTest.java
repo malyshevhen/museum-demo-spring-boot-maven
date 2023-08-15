@@ -1,7 +1,6 @@
-package com.example.dto.users;
+package com.example.dto.museum.article;
 
 import com.example.dto.config.AbstractDtoTest;
-import org.instancio.junit.InstancioSource;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -17,7 +16,12 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-class UserShortResponseDtoTest extends AbstractDtoTest<UserShortResponse> {
+class ArticlePublishingFormTest extends AbstractDtoTest<ArticlePublishingForm> {
+
+    @BeforeEach
+    void setUp() {
+        setField("tags", Set.of());
+    }
 
     @AfterEach
     void tearDown() {
@@ -26,8 +30,8 @@ class UserShortResponseDtoTest extends AbstractDtoTest<UserShortResponse> {
 
     @Test
     void shouldPass() {
-        UserShortResponse userResponse = getModel();
-        var violations = validate(userResponse);
+        var articlePublishingForm = getModel();
+        var violations = validate(articlePublishingForm);
 
         assertTrue(violations.isEmpty());
     }
@@ -36,7 +40,7 @@ class UserShortResponseDtoTest extends AbstractDtoTest<UserShortResponse> {
     @NullAndEmptySource
     @ValueSource(strings = {"   "})
     void invalidTextFields(String value) {
-        var fields = Stream.of("firstName", "lastName", "email").toList();
+        var fields = Stream.of("title", "content").toList();
         fields.stream()
                 .peek(field -> setField(field, value))
                 .map(field -> getModel())
@@ -49,9 +53,9 @@ class UserShortResponseDtoTest extends AbstractDtoTest<UserShortResponse> {
     @NullSource
     @ValueSource(longs = {-100L, 0L})
     void invalidId(Long value) {
-        setField("id", value);
-        var userShortResponse = getModel();
-        var violations = validate(userShortResponse);
+        setField("authorId", value);
+        var articlePublishingForm = getModel();
+        var violations = validate(articlePublishingForm);
         assertFalse(violations.isEmpty());
     }
 }

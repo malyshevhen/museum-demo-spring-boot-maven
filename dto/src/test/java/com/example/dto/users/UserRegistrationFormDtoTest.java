@@ -1,9 +1,7 @@
 package com.example.dto.users;
 
 import com.example.dto.config.AbstractDtoTest;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -19,12 +17,23 @@ import static com.example.constants.TestConstants.Users.UNDERSIZED_NAME_FIELD;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-class UserRegistrationFormDtoTest extends AbstractDtoTest {
+class UserRegistrationFormDtoTest extends AbstractDtoTest<UserRegistrationForm> {
+
+    @BeforeEach
+    void setUp() {
+        setField("password", "ValidPassword1");
+        setField("email", "valid@gmail.com");
+    }
+
+    @AfterEach
+    void tearDown() {
+        clearFields();
+    }
 
     @DisplayName("No constraint violations with valid form")
     @Test
     void testPass() {
-        var userForm = getUserRegistrationForm();
+        var userForm = getModel();
         var violations = validate(userForm);
 
         assertTrue(violations.isEmpty());
@@ -37,7 +46,8 @@ class UserRegistrationFormDtoTest extends AbstractDtoTest {
     void invalidNameFields(String value) {
         var fields = Stream.of("firstName", "lastName").toList();
         fields.stream()
-                .map(field -> getUserRegistrationForm(field, value))
+                .peek(field -> setField(field, value))
+                .map(field -> getModel())
                 .map(this::validate)
                 .map(Set::isEmpty)
                 .forEach(Assertions::assertFalse);
@@ -63,7 +73,8 @@ class UserRegistrationFormDtoTest extends AbstractDtoTest {
                 "addressApartment",
                 "addressZip").toList();
         fields.stream()
-                .map(field -> getUserRegistrationForm(field, value))
+                .peek(field -> setField(field, value))
+                .map(field -> getModel())
                 .map(this::validate)
                 .map(Set::isEmpty)
                 .forEach(Assertions::assertFalse);
@@ -82,8 +93,8 @@ class UserRegistrationFormDtoTest extends AbstractDtoTest {
     @NullAndEmptySource
     @ValueSource(strings = {"   ", "email", "email@", "@email", "email@gmail", "@gmail.com"})
     void invalidEmail(String email) {
-        var fieldName = "email";
-        var userForm = getUserRegistrationForm(fieldName, email);
+        setField("email", email);
+        var userForm = getModel();
 
         var violations = validate(userForm);
 
@@ -95,8 +106,8 @@ class UserRegistrationFormDtoTest extends AbstractDtoTest {
     @NullAndEmptySource
     @ValueSource(strings = {"   ", "noDigits", "sh0rt"})
     void invalidPasswordFails(String password) {
-        String fieldName = "password";
-        var userForm = getUserRegistrationForm(fieldName, password);
+        setField("password", password);
+        var userForm = getModel();
 
         var violations = validate(userForm);
 

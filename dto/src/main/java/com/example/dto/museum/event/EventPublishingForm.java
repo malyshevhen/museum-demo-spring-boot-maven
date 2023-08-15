@@ -18,7 +18,6 @@ public record EventPublishingForm(
         @NotNull @NotBlank String content,
         @NotNull LocalDateTime timing,
         @NotNull @Positive Integer capacity,
-        @NotNull Event.EventStatus status,
-        Long authorId
+        @NotNull @Positive Long authorId
 ) implements Serializable {
 }
