@@ -14,22 +14,12 @@
     <groupId>com.example</groupId>
     <artifactId>modular-demo-app</artifactId>
     <version>1.0-SNAPSHOT</version>
-    <packaging>pom</packaging>
 
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <java.version>17</java.version>
     </properties>
-
-    <modules>
-        <module>web</module>
-        <module>service</module>
-        <module>domain</module>
-        <module>repository</module>
-        <module>dto</module>
-        <module>libraries</module>
-    </modules>
 
     <dependencies>
         <dependency>
@@ -100,40 +90,5 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
-
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>com.example</groupId>
-                <artifactId>web</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.example</groupId>
-                <artifactId>service</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.example</groupId>
-                <artifactId>domain</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.example</groupId>
-                <artifactId>repository</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.example</groupId>
-                <artifactId>dto</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.example</groupId>
-                <artifactId>libraries</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
 
 </project>
