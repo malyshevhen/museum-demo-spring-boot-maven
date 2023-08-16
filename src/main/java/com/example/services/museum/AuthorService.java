@@ -48,12 +48,5 @@ public interface AuthorService {
      */
     AuthorShortResponse updateUsername(@NotNull @Positive Long id,
                                        @NotNull @NotBlank String username);
-
-    /**
-     * Delete an author by ID.
-     *
-     * @param id The ID of the author to delete.
-     */
-    void deleteById(@NotNull @Positive Long id);
 }
 

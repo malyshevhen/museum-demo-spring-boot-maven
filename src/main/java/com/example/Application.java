@@ -22,10 +22,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
         )
 )
 @SpringBootApplication
-//        (scanBasePackages = "com.example.*")
-//@ComponentScan(basePackages = "com.example.*")
-//@EntityScan(basePackages = "com.example.*")
-//@EnableJpaRepositories(basePackages = "com.example.*")
 public class Application {
 
     public static void main(String[] args) {

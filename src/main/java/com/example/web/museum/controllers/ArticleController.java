@@ -51,7 +51,7 @@ public class ArticleController {
     @ResponseStatus(code = HttpStatus.OK)
     public List<ArticleWithContent> getAllWithBodyByAuthorId(
             @PathVariable @NotNull @Positive final Long authorId) {
-        return articleService.getAllWithBodyByAuthorId(authorId);
+        return articleService.getAllWithContentByAuthorId(authorId);
     }
 
     /**
@@ -70,7 +70,7 @@ public class ArticleController {
                             schema = @Schema(implementation = ArticleWithoutContent.class)))})
     @ResponseStatus(code = HttpStatus.OK)
     public List<ArticleWithoutContent> getAllWithoutBody() {
-        return articleService.getAllWithoutBody();
+        return articleService.getAllWithoutContent();
     }
 
     /**

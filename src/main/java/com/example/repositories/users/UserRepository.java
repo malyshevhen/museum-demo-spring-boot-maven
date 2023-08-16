@@ -2,7 +2,7 @@ package com.example.repositories.users;
 
 
 import com.example.domain.users.User;
-import com.example.dto.users.UserShortResponse;
+import com.example.dto.users.UserResponse;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -14,17 +14,8 @@ import java.util.Optional;
  */
 public interface UserRepository extends JpaRepository<User, Long> {
 
-    /**
-     * Find user by email.
-     *
-     * @param email email of user
-     * @return Optional of user with given id
-     */
-    @Query("select u from User u where u.email = ?1")
-    Optional<User> findByEmail(String email);
-
     @Query("""
-            SELECT new com.example.dto.users.UserShortResponse
+            SELECT new com.example.dto.users.UserResponse
             (
                 u.id,
                 u.firstName,
@@ -33,10 +24,10 @@ public interface UserRepository extends JpaRepository<User, Long> {
             )
             FROM User u
             """)
-    List<UserShortResponse> findAllDtos();
+    List<UserResponse> findAllDtos();
 
     @Query("""
-            SELECT new com.example.dto.users.UserShortResponse
+            SELECT new com.example.dto.users.UserResponse
             (
                 u.id,
                 u.firstName,
@@ -46,7 +37,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
             FROM User u
             WHERE u.id = :id
             """)
-    Optional<UserShortResponse> findDtoById(Long id);
+    Optional<UserResponse> findDtoById(Long id);
 
     boolean existsByEmail(String email);
 }

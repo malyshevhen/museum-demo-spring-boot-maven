@@ -5,7 +5,8 @@ VALUES
     ('Jane', 'Smith', 'jane@example.com', 'Hello123', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
     ('Alice', 'Johnson', 'alice@example.com', 'Password9', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
     ('Bob', 'Williams', 'bob@example.com', '1234abcd', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-    ('Emily', 'Brown', 'emily@example.com', 'SecurePass1', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+    ('Emily', 'Brown', 'emily@example.com', 'SecurePass1', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+    ('Foo', 'Bar', 'Foo@example.com', 'SecurePass1', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
 -- Insert fake test records into authors table
 INSERT INTO authors (username, user_id, created_at, updated_at)

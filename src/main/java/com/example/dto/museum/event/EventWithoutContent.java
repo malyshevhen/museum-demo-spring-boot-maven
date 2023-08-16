@@ -18,6 +18,7 @@ public record EventWithoutContent(
         @NotNull @NotBlank String title,
         @NotNull LocalDateTime timing,
         @NotNull @Positive Integer capacity,
+        @NotNull Event.EventStatus status,
         @NotNull @Positive Long authorId,
         @NotNull @NotBlank String authorUsername
 ) implements Serializable {

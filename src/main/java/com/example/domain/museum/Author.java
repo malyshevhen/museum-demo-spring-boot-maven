@@ -5,6 +5,7 @@ import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Set;
 
+import jakarta.persistence.*;
 import jakarta.validation.Valid;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -16,17 +17,6 @@ import static com.example.constraints.users.UserConstraints.MIN_NAME_LENGTH;
 import com.example.domain.users.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Index;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.Table;
-import jakarta.persistence.UniqueConstraint;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -75,7 +65,7 @@ public class Author {
      * User account relative to author.
      */
     @OneToOne
-    @JoinColumn(name = "user_id", nullable = false, unique = true)
+    @JoinColumn(name = "user_id",nullable = false, unique = true)
     @NotNull
     @Valid
     private User user;
@@ -89,6 +79,11 @@ public class Author {
     @OneToMany(mappedBy = "author")
     private Set<Event> events = new LinkedHashSet<>();
 
+    @Setter(AccessLevel.PRIVATE)
+    @ToString.Exclude
+    @JsonIgnore
+    @OneToMany(mappedBy = "author")
+    private Set<Article> articles = new LinkedHashSet<>();
     /**
      * Timestamp of record creation.
      */
@@ -100,6 +95,7 @@ public class Author {
      */
     @UpdateTimestamp
     private LocalDateTime updatedAt;
+
 
     /**
      * @param authorsUsername    username of the author

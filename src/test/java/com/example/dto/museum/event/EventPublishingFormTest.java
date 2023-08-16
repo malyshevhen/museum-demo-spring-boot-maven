@@ -1,6 +1,6 @@
 package com.example.dto.museum.event;
 
-import com.example.dto.config.AbstractDtoTest;
+import com.example.config.AbstractInstancioTest;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -15,11 +15,11 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-class EventPublishingFormTest extends AbstractDtoTest<EventPublishingForm> {
+class EventPublishingFormTest extends AbstractInstancioTest<EventPublishingForm> {
 
     @AfterEach
     void tearDown() {
-        clearFields();
+        clearAdditionalSettings();
     }
 
     @Test
@@ -37,7 +37,7 @@ class EventPublishingFormTest extends AbstractDtoTest<EventPublishingForm> {
     void invalidTextFields(String value) {
         var fields = Stream.of("title", "content").toList();
         fields.stream()
-                .peek(field -> setField(field, value))
+                .peek(field -> set(field, value))
                 .map(field -> getModel())
                 .map(this::validate)
                 .map(Set::isEmpty)
@@ -48,7 +48,7 @@ class EventPublishingFormTest extends AbstractDtoTest<EventPublishingForm> {
     @NullSource
     @ValueSource(ints = {-100, 0})
     void invalidCapacity(Integer value) {
-        setField("capacity", value);
+        set("capacity", value);
         var eventPublishingForm = getModel();
         var violations = validate(eventPublishingForm);
         assertFalse(violations.isEmpty());
@@ -58,7 +58,7 @@ class EventPublishingFormTest extends AbstractDtoTest<EventPublishingForm> {
     @NullSource
     @ValueSource(longs = {-100, 0})
     void invalidAuthorId(Long value) {
-        setField("authorId", value);
+        set("authorId", value);
         var eventPublishingForm = getModel();
         var violations = validate(eventPublishingForm);
         assertFalse(violations.isEmpty());

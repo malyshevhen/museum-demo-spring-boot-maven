@@ -1,6 +1,6 @@
 package com.example.dto.museum.article;
 
-import com.example.dto.config.AbstractDtoTest;
+import com.example.config.AbstractInstancioTest;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -15,16 +15,16 @@ import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class ArticleWithoutContentTest extends AbstractDtoTest<ArticleWithoutContent> {
+class ArticleWithoutContentTest extends AbstractInstancioTest<ArticleWithoutContent> {
 
     @BeforeEach
     void setUp() {
-        setField("tags", Set.of());
+        set("tags", Set.of());
     }
 
     @AfterEach
     void tearDown() {
-        clearFields();
+        clearAdditionalSettings();
     }
 
     @Test
@@ -41,7 +41,7 @@ class ArticleWithoutContentTest extends AbstractDtoTest<ArticleWithoutContent> {
     void invalidTextFields(String value) {
         var fields = Stream.of("title", "authorUsername").toList();
         fields.stream()
-                .peek(field -> setField(field, value))
+                .peek(field -> set(field, value))
                 .map(field -> getModel())
                 .map(this::validate)
                 .map(Set::isEmpty)
@@ -54,7 +54,7 @@ class ArticleWithoutContentTest extends AbstractDtoTest<ArticleWithoutContent> {
     void invalidId(Long value) {
         var fields = Stream.of("id", "authorId").toList();
         fields.stream()
-                .peek(field -> setField(field, value))
+                .peek(field -> set(field, value))
                 .map(field -> getModel())
                 .map(this::validate)
                 .map(Set::isEmpty)

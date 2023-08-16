@@ -1,9 +1,8 @@
-package com.example.dto.museum.article;
+package com.example.dto.museum.author;
 
 import com.example.config.AbstractInstancioTest;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.NullAndEmptySource;
@@ -16,12 +15,7 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-class ArticlePublishingFormTest extends AbstractInstancioTest<ArticlePublishingForm> {
-
-    @BeforeEach
-    void setUp() {
-        set("tags", Set.of());
-    }
+class AuthorShortResponseInstancioTest extends AbstractInstancioTest<AuthorShortResponse> {
 
     @AfterEach
     void tearDown() {
@@ -30,8 +24,8 @@ class ArticlePublishingFormTest extends AbstractInstancioTest<ArticlePublishingF
 
     @Test
     void shouldPass() {
-        var articlePublishingForm = getModel();
-        var violations = validate(articlePublishingForm);
+        var authorShortResponse = getModel();
+        var violations = validate(authorShortResponse);
 
         assertTrue(violations.isEmpty());
     }
@@ -40,7 +34,7 @@ class ArticlePublishingFormTest extends AbstractInstancioTest<ArticlePublishingF
     @NullAndEmptySource
     @ValueSource(strings = {"   "})
     void invalidTextFields(String value) {
-        var fields = Stream.of("title", "content").toList();
+        var fields = Stream.of("username", "userFirstName", "userLastName").toList();
         fields.stream()
                 .peek(field -> set(field, value))
                 .map(field -> getModel())
@@ -53,9 +47,9 @@ class ArticlePublishingFormTest extends AbstractInstancioTest<ArticlePublishingF
     @NullSource
     @ValueSource(longs = {-100L, 0L})
     void invalidId(Long value) {
-        set("authorId", value);
-        var articlePublishingForm = getModel();
-        var violations = validate(articlePublishingForm);
+        set("id", value);
+        var userShortResponse = getModel();
+        var violations = validate(userShortResponse);
         assertFalse(violations.isEmpty());
     }
 }

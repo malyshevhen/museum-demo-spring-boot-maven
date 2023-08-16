@@ -1,12 +1,14 @@
 package com.example.dto.users;
 
 import com.example.domain.users.User;
-import jakarta.validation.constraints.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 
 import java.io.Serializable;
 
 import static com.example.constraints.SharedConstraints.MAX_FIELD_LENGTH;
-import static com.example.constraints.SharedConstraints.MIN_FIELD_LENGTH;
 import static com.example.constraints.users.UserConstraints.*;
 
 /**
@@ -33,32 +35,7 @@ public record UserRegistrationForm(
         @NotNull
         @Size(max = MAX_FIELD_LENGTH)
         @Pattern(regexp = PASSWORD_REGEXP)
-        String password,
-
-        @NotNull
-        @NotBlank
-        @Size(min = MIN_FIELD_LENGTH, max = MAX_FIELD_LENGTH)
-        String addressCity,
-
-        @NotNull
-        @NotBlank
-        @Size(min = MIN_FIELD_LENGTH, max = MAX_FIELD_LENGTH)
-        String addressStreet,
-
-        @NotNull
-        @NotBlank
-        @Size(min = MIN_FIELD_LENGTH, max = MAX_FIELD_LENGTH)
-        String addressNumber,
-
-        @NotNull
-        @NotBlank
-        @Size(min = MIN_FIELD_LENGTH, max = MAX_FIELD_LENGTH)
-        String addressApartment,
-
-        @NotNull
-        @NotBlank
-        @Size(min = MIN_FIELD_LENGTH, max = MAX_FIELD_LENGTH)
-        String addressZip
+        String password
 
 ) implements Serializable {
 }

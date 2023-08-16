@@ -52,14 +52,14 @@ public interface ArticleService {
      *
      * @return ArticleWithContent List of DTOs with article content
      */
-    List<ArticleWithContent> getAllWithBodyByAuthorId(@NotNull @Positive Long authorId);
+    List<ArticleWithContent> getAllWithContentByAuthorId(@NotNull @Positive Long authorId);
 
     /**
      * Get a list of all article DTOs without article content.
      *
      * @return ArticleWithoutContent List of DTOs without article content
      */
-    List<ArticleWithoutContent> getAllWithoutBody();
+    List<ArticleWithoutContent> getAllWithoutContent();
 
     /**
      * Delete an article by its ID.

@@ -31,7 +31,7 @@ public interface ArticleRepository extends JpaRepository<Article, Long> {
 
     }
     @Query("""
-            SELECT com.example.repositories.museum.ArticleRepository$ArticleDbRowWithContent
+            SELECT new com.example.repositories.museum.ArticleRepository$ArticleDbRowWithContent
             (
                 a.id,
                 a.title,

@@ -70,7 +70,7 @@ public class EventServiceImpl implements EventService {
      */
     @Override
     @Transactional
-    public EventWithContent save(final EventPublishingForm form) {
+    public EventWithContent save(EventPublishingForm form) {
         var authorId = form.authorId();
         var author = authorRepository.findById(authorId)
                 .orElseThrow(() -> new AuthorNotFoundException(

@@ -1,5 +1,6 @@
 package com.example.domain.users;
 
+import com.example.domain.museum.Author;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.*;
@@ -72,18 +73,15 @@ public class User {
     private String password;
 
     /**
-     * Users address.
-     */
-    @Embedded
-    private Address address;
-
-    /**
      * The roles associated with the user.
      */
     @Setter(AccessLevel.PRIVATE)
     @ElementCollection
     @Enumerated(EnumType.STRING)
     private Set<Role> roles = new LinkedHashSet<>();
+
+    @OneToOne(mappedBy = "user")
+    private Author author;
 
     /**
      * The timestamp when the user was created.
@@ -101,13 +99,11 @@ public class User {
             final @NotNull @NotBlank String firstName,
             final @NotNull @NotBlank String lastName,
             final @NotNull @Email String email,
-            final @NotNull @Pattern(regexp = PASSWORD_REGEXP) String password,
-            Address address) {
+            final @NotNull @Pattern(regexp = PASSWORD_REGEXP) String password) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.password = password;
-        this.address = address;
     }
 
     @Override

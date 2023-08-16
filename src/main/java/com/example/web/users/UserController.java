@@ -1,9 +1,8 @@
 package com.example.web.users;
 
 
-import com.example.domain.users.Address;
 import com.example.dto.users.UserRegistrationForm;
-import com.example.dto.users.UserShortResponse;
+import com.example.dto.users.UserResponse;
 import com.example.services.users.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -51,11 +50,11 @@ public class UserController {
                     description = "Successfully retrieved the list of users",
                     content = {@Content(
                             mediaType = "application/json",
-                            schema = @Schema(implementation = UserShortResponse.class))}),
+                            schema = @Schema(implementation = UserResponse.class))}),
             @ApiResponse(
                     responseCode = "404",
                     description = "No users found")})
-    public List<UserShortResponse> getAll() {
+    public List<UserResponse> getAll() {
         return userService.getAll();
     }
 
@@ -73,7 +72,7 @@ public class UserController {
                     description = "Successfully retrieved the user",
                     content = {@Content(
                             mediaType = "application/json",
-                            schema = @Schema(implementation = UserShortResponse.class))}),
+                            schema = @Schema(implementation = UserResponse.class))}),
             @ApiResponse(
                     responseCode = "400",
                     description = "Invalid ID"),
@@ -81,7 +80,7 @@ public class UserController {
                     responseCode = "404",
                     description = "User with given ID not found")})
     @ResponseStatus(HttpStatus.OK)
-    public UserShortResponse getById(@PathVariable @NotNull @Positive final Long id) {
+    public UserResponse getById(@PathVariable @NotNull @Positive final Long id) {
         return userService.getById(id);
     }
 
@@ -99,7 +98,7 @@ public class UserController {
                     description = "User created successfully",
                     content = {@Content(
                             mediaType = "application/json",
-                            schema = @Schema(implementation = UserShortResponse.class))}),
+                            schema = @Schema(implementation = UserResponse.class))}),
             @ApiResponse(
                     responseCode = "400",
                     description = "Invalid user"),
@@ -107,58 +106,7 @@ public class UserController {
                     responseCode = "404",
                     description = "User with given ID not found")})
     @ResponseStatus(HttpStatus.CREATED)
-    public UserShortResponse create(@RequestBody @NotNull @Valid final UserRegistrationForm user) {
+    public UserResponse create(@RequestBody @NotNull @Valid final UserRegistrationForm user) {
         return userService.save(user);
-    }
-
-    /**
-     * Update an existing user`s address.
-     *
-     * @param id   The ID of the user to update.
-     * @param address The user`s address to update.
-     * @return The updated user.
-     */
-    @PutMapping("/{id}")
-    @Operation(summary = "Update an existing user`s address")
-    @ApiResponses(value = {
-            @ApiResponse(
-                    responseCode = "200",
-                    description = "Address updated successfully",
-                    content = {@Content(
-                            mediaType = "application/json",
-                            schema = @Schema(implementation = UserShortResponse.class))}),
-            @ApiResponse(
-                    responseCode = "400",
-                    description = "Invalid user`s Id or address"),
-            @ApiResponse(
-                    responseCode = "404",
-                    description = "User with given ID not found")})
-    @ResponseStatus(HttpStatus.OK)
-    public UserShortResponse updateAddress(
-            @PathVariable @NotNull @Positive final Long id,
-            @RequestBody @NotNull @Valid final Address address) {
-        return userService.updateAddress(id, address);
-    }
-
-    /**
-     * Delete a user by ID.
-     *
-     * @param id The ID of the user to delete.
-     */
-    @DeleteMapping("/{id}")
-    @Operation(summary = "Delete a user by ID")
-    @ApiResponses(value = {
-            @ApiResponse(
-                    responseCode = "204",
-                    description = "User deleted successfully"),
-            @ApiResponse(
-                    responseCode = "400",
-                    description = "Invalid ID"),
-            @ApiResponse(
-                    responseCode = "404",
-                    description = "User with given ID not found")})
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@PathVariable @NotNull @Positive final Long id) {
-        userService.deleteById(id);
     }
 }

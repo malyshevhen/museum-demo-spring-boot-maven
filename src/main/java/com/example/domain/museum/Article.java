@@ -75,7 +75,7 @@ public class Article {
      */
     @NotNull
     @Valid
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "author_id", nullable = false)
     private Author author;
 

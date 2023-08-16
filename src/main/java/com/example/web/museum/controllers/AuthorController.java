@@ -131,26 +131,4 @@ public class AuthorController {
                          @RequestBody @NotNull @Valid final String username) {
         return authorService.updateUsername(id, username);
     }
-
-    /**
-     * Delete an author by ID.
-     *
-     * @param id The ID of the author to delete.
-     */
-    @DeleteMapping("/{id}")
-    @Operation(summary = "Delete an author by ID")
-    @ApiResponses(value = {
-            @ApiResponse(
-                    responseCode = "204",
-                    description = "Author deleted successfully"),
-            @ApiResponse(
-                    responseCode = "400",
-                    description = "ID id invalid"),
-            @ApiResponse(
-                    responseCode = "404",
-                    description = "No author with given ID id found")})
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteAuthor(@PathVariable @NotNull @Positive final Long id) {
-        authorService.deleteById(id);
-    }
 }

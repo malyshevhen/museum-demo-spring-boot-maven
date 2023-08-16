@@ -31,7 +31,7 @@ public class ArticleServiceImpl implements ArticleService {
     private final AuthorRepository authorRepository;
 
     @Override
-    public List<ArticleWithContent> getAllWithBodyByAuthorId(final Long authorId) {
+    public List<ArticleWithContent> getAllWithContentByAuthorId(final Long authorId) {
         var articles = articleRepository.findAllWithBodyByAuthorId(authorId);
         if (articles.isEmpty()) {
             throw new ArticleNotFoundException("No articles found");
@@ -40,7 +40,7 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public List<ArticleWithoutContent> getAllWithoutBody() {
+    public List<ArticleWithoutContent> getAllWithoutContent() {
         var articles = articleRepository.findAllWithoutContent();
         if (articles.isEmpty()) {
             throw new ArticleNotFoundException("No articles found");

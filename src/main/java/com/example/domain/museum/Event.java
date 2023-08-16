@@ -86,7 +86,7 @@ public class Event {
     /**
      * Author of the web-post.
      */
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "author_id", nullable = false)
     @NotNull
     @Valid

@@ -110,22 +110,6 @@ public class AuthorServiceImpl implements AuthorService {
         return getById(id);
     }
 
-    /**
-     * Delete an author by ID.
-     *
-     * @param id The ID of the author to delete.
-     * @throws AuthorNotFoundException if author with given id is not found.
-     */
-    @Override
-    @Transactional
-    public void deleteById(final Long id) {
-        if (!isPresent(id)) {
-            throw new AuthorNotFoundException(
-                    String.format(AUTHOR_WITH_ID_NOT_FOUND, id));
-        }
-        authorRepository.deleteById(id);
-    }
-
     private boolean isPresent(Long id) {
         return authorRepository.existsById(id);
     }
