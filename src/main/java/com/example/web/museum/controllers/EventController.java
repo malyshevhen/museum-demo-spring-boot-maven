@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
@@ -21,9 +22,11 @@ import java.util.List;
 
 /**
  * REST controller for managing museum events.
+ *
+ * @author Evhen Malysh
  */
 @RestController
-@RequestMapping("/api/museum/events")
+@RequestMapping("/events")
 @Validated
 @Tag(name = "Events", description = "API operations related to museum events")
 @RequiredArgsConstructor
@@ -96,7 +99,7 @@ public class EventController {
                     description = "Event cant be null")})
     @ResponseStatus(HttpStatus.CREATED)
     public EventWithContent create(
-            @RequestBody @NotNull final EventPublishingForm eventPublishingForm) {
+            @RequestBody @NotNull @Valid final EventPublishingForm eventPublishingForm) {
         return eventService.save(eventPublishingForm);
     }
 

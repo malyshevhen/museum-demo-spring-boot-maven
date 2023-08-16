@@ -26,7 +26,7 @@ import java.util.List;
  * @author Evhen Malysh
  */
 @RestController
-@RequestMapping("/api/museum/articles")
+@RequestMapping("/articles")
 @Validated
 @Tag(name = "Articles", description = "API operations related to museum articles")
 @RequiredArgsConstructor
@@ -39,7 +39,7 @@ public class ArticleController {
      *
      * @return List of articles.
      */
-    @GetMapping("/{authorId}")
+    @GetMapping("/by-author/{authorId}")
     @Operation(summary = "Get a list of all articles with content by author ID")
     @ApiResponses(value = {
             @ApiResponse(
@@ -168,7 +168,7 @@ public class ArticleController {
                     description = "Article not found")
     })
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteById(@PathVariable final Long id) {
+    public void deleteById(@PathVariable @NotNull @Positive final Long id) {
         articleService.deleteById(id);
     }
 }

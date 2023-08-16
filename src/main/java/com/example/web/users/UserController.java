@@ -1,6 +1,5 @@
 package com.example.web.users;
 
-
 import com.example.dto.users.UserRegistrationForm;
 import com.example.dto.users.UserResponse;
 import com.example.services.users.UserService;
@@ -32,9 +31,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserController {
 
-    /**
-     *
-     */
     private final UserService userService;
 
     /**

@@ -88,7 +88,6 @@ class UserControllerTest {
     @Test
     void getById_status_bad_request() throws Exception {
         long id = -1L;
-        when(userService.getById(id)).thenThrow(UserNotFoundException.class);
 
         mockMvc.perform(get("/users/{id}", id))
                 .andExpect(status().isBadRequest());

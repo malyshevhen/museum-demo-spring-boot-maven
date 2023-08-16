@@ -25,7 +25,7 @@ import java.util.List;
  * @author Evhen Malysh
  */
 @RestController
-@RequestMapping("/api/museum/authors")
+@RequestMapping("/authors")
 @Validated
 @Tag(name = "Authors", description = "API operations related to authors")
 @RequiredArgsConstructor
