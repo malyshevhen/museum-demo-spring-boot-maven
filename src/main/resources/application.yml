@@ -1,8 +1,8 @@
 spring:
   datasource:
-    url: ${DATASOURCE_URL:jdbc:postgresql://localhost:5432/museum_db}
-    username: ${DATASOURCE_USERNAME:postgres}
-    password: ${DATASOURCE_PASSWORD:password}
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/museum_db}
+    username: ${SPRING_DATASOURCE_USERNAME:postgres}
+    password: ${SPRING_DATASOURCE_PASSWORD:password}
 
   flyway:
     enabled: true

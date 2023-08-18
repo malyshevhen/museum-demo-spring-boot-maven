@@ -5,7 +5,7 @@
 
 ### Description:
 
-Modular maven-based java spring-boot application, written to level up knowledge of maven build tool, spring boot, and some libraries.
+Java spring-boot application, written to level up knowledge of maven build tool, spring boot, and some libraries.
 It is a back-end part of the abstract Museum Website and provides REST endpoints with basic CRUD functionality.
 
 ---
@@ -15,200 +15,167 @@ It is a back-end part of the abstract Museum Website and provides REST endpoints
 > The project has basic 'onion' or three-layer architecture.
 
  ![app-uml-diagram](Project-simple-diagram.png)
-#### Modules:
-
-1. Domain module:
-	Contains domain models of the project
-2. DTO module:
-	Contains Data Transfer Objects as forms for creating domain models, and retrieving them via REST API
-3. Service module:
-	Contains classes with transactional logic, business logic, and validation. 
-4. Web module:
-	 Contains REST Controllers and RestControllerAdvice classes for handling API calls and processing exceptions 
-5. Libraries module:
-	Shares constraints, constants and utility classes. 
-
 
 ---
 
 ## Project structure:
 
 ```
-															on 2023-08-14
+    														on 2023-08-18
 .
 ├── docker-compose.yml
 ├── Dockerfile
-├── pom.xml
 ├── domain
-│   ├── pom.xml
-│   └── src
-│       ├── main
-│       │   ├── java
-│       │   │   └── com
-│       │   │       └── example
-│       │   │           └── domain
-│       │   │               ├── museum
-│       │   │               │   ├── Article.java
-│       │   │               │   ├── Author.java
-│       │   │               │   └── Event.java
-│       │   │               └── users
-│       │   │                   ├── Address.java
-│       │   │                   └── User.java
-│       │   └── resources
-│       │       ├── application.yml
-│       │       └── db
-│       │           └── migration
-│       │               └── V1__initial_schema.sql
-│       └── test
-│           ├── java
-│           │   └── com
-│           │       └── example
-│           │           └── domain
-│           │               ├── config
-│           │               │   └── AbstractDomainModelTest.java
-│           │               ├── museum
-│           │               │   ├── ArticleDomainModelTest.java
-│           │               │   ├── AuthorDomainModelTest.java
-│           │               │   └── EventDomainModelTest.java
-│           │               └── users
-│           │                   └── UserDomainModelTest.java
-│           └── resources
-│               └── application.yml
-├── dto
-│   ├── pom.xml
-│   └── src
-│       ├── main
-│       │   ├── java
-│       │   │   └── com
-│       │   │       └── example
-│       │   │           └── dto
-│       │   │               ├── museum
-│       │   │               │   ├── article
-│       │   │               │   │   ├── ArticlePublishingForm.java
-│       │   │               │   │   ├── ArticleWithContent.java
-│       │   │               │   │   └── ArticleWithoutContent.java
-│       │   │               │   ├── author
-│       │   │               │   │   ├── AuthorRegistrationForm.java
-│       │   │               │   │   └── AuthorShortResponse.java
-│       │   │               │   └── event
-│       │   │               │       ├── EventPublishingForm.java
-│       │   │               │       ├── EventWithContent.java
-│       │   │               │       └── EventWithoutContent.java
-│       │   │               └── users
-│       │   │                   ├── UserRegistrationForm.java
-│       │   │                   └── UserShortResponse.java
-│       │   └── resources
-│       │       └── application.yml
-│       └── test
-│           └── java
-│               └── com
-│                   └── example
-│                       └── dto
-│                           ├── config
-│                           │   └── AbstractDtoTest.java
-│                           ├── museum
-│                           │   └── author
-│                           │       ├── AuthorRegistrationFormDtoTest.java
-│                           │       └── AuthorShortResponseDtoTest.java
-│                           └── users
-│                               ├── UserRegistrationFormDtoTest.java
-│                               └── UserShortResponseDtoTest.java
-├── libraries
-│   ├── pom.xml
-│   └── src
-│       └── main
-│           ├── java
-│           │   └── com
-│           │       └── example
-│           │           ├── constants
-│           │           │   └── TestConstants.java
-│           │           └── constraints
-│           │               ├── museum
-│           │               │   ├── ArticleConstraints.java
-│           │               │   ├── AuthorConstraints.java
-│           │               │   └── EventConstraints.java
-│           │               ├── SharedConstraints.java
-│           │               └── users
-│           │                   └── UserConstraints.java
-│           └── resources
-├── repository
-│   ├── pom.xml
-│   └── src
-│       ├── main
-│       │   ├── java
-│       │   │   └── com
-│       │   │       └── example
-│       │   │           └── repositories
-│       │   │               ├── museum
-│       │   │               │   ├── ArticleRepository.java
-│       │   │               │   ├── AuthorRepository.java
-│       │   │               │   └── EventRepository.java
-│       │   │               └── users
-│       │   │                   └── UserRepository.java
-│       │   └── resources
-│       │       └── application.yml
-│       └── test
-│           └── java
-│               └── com
-│                   └── example
-├── service
-│   ├── pom.xml
-│   └── src
-│       ├── main
-│       │   ├── java
-│       │   │   └── com
-│       │   │       └── example
-│       │   │           └── services
-│       │   │               ├── museum
-│       │   │               │   ├── ArticleService.java
-│       │   │               │   ├── AuthorService.java
-│       │   │               │   ├── EventService.java
-│       │   │               │   ├── exceptions
-│       │   │               │   │   ├── ArticleNotFoundException.java
-│       │   │               │   │   ├── AuthorAlreadyExistException.java
-│       │   │               │   │   ├── AuthorNotFoundException.java
-│       │   │               │   │   └── EventNotFoundException.java
-│       │   │               │   └── impl
-│       │   │               │       ├── ArticleServiceImpl.java
-│       │   │               │       ├── AuthorServiceImpl.java
-│       │   │               │       └── EventServiceImpl.java
-│       │   │               └── users
-│       │   │                   ├── exceptions
-│       │   │                   │   ├── UserAlreadyExistsException.java
-│       │   │                   │   └── UserNotFoundException.java
-│       │   │                   ├── impl
-│       │   │                   │   └── UserServiceImpl.java
-│       │   │                   └── UserService.java
-│       │   └── resources
-│       │       └── application.yml
-│       └── test
-│           └── java
-│               └── com
-│                   └── example
-└── web
-    ├── pom.xml
-    └── src
-        ├── main
-        │   ├── java
-        │   │   └── com
-        │   │       └── example
-        │   │           └── web
-        │   │               ├── ApiApplication.java
-        │   │               ├── config
-        │   │               │   └── AppConfig.java
-        │   │               ├── exceptionhandler
-        │   │               │   └── RestExceptionHandler.java
-        │   │               ├── museum
-        │   │               │   └── controllers
-        │   │               │       ├── ArticleController.java
-        │   │               │       ├── AuthorController.java
-        │   │               │       └── EventController.java
-        │   │               └── users
-        │   │                   └── UserController.java
-        │   └── resources
-        │       └── application.yml
-        └── test
-            └── java
+│   ├── domain.iml
+│   └── target
+│       ├── classes
+│       ├── generated-sources
+│       │   └── annotations
+│       ├── generated-test-sources
+│       │   └── test-annotations
+│       └── test-classes
+├── mvnw
+├── mvnw.cmd
+├── pom.xml
+├── Project-simple-diagram.png
+├── README.md
+└── src
+    ├── main
+    │   ├── java
+    │   │   └── com
+    │   │       └── example
+    │   │           ├── Application.java
+    │   │           ├── constants
+    │   │           │   └── TestConstants.java
+    │   │           ├── constraints
+    │   │           │   ├── museum
+    │   │           │   │   ├── ArticleConstraints.java
+    │   │           │   │   ├── AuthorConstraints.java
+    │   │           │   │   └── EventConstraints.java
+    │   │           │   ├── SharedConstraints.java
+    │   │           │   └── users
+    │   │           │       └── UserConstraints.java
+    │   │           ├── domain
+    │   │           │   ├── museum
+    │   │           │   │   ├── Article.java
+    │   │           │   │   ├── Author.java
+    │   │           │   │   └── Event.java
+    │   │           │   └── users
+    │   │           │       └── User.java
+    │   │           ├── dto
+    │   │           │   ├── museum
+    │   │           │   │   ├── article
+    │   │           │   │   │   ├── ArticlePublishingForm.java
+    │   │           │   │   │   ├── ArticleWithContent.java
+    │   │           │   │   │   └── ArticleWithoutContent.java
+    │   │           │   │   ├── author
+    │   │           │   │   │   ├── AuthorRegistrationForm.java
+    │   │           │   │   │   └── AuthorShortResponse.java
+    │   │           │   │   └── event
+    │   │           │   │       ├── EventPublishingForm.java
+    │   │           │   │       ├── EventWithContent.java
+    │   │           │   │       └── EventWithoutContent.java
+    │   │           │   └── users
+    │   │           │       ├── UserRegistrationForm.java
+    │   │           │       └── UserResponse.java
+    │   │           ├── repositories
+    │   │           │   ├── museum
+    │   │           │   │   ├── ArticleRepository.java
+    │   │           │   │   ├── AuthorRepository.java
+    │   │           │   │   └── EventRepository.java
+    │   │           │   └── users
+    │   │           │       └── UserRepository.java
+    │   │           ├── services
+    │   │           │   ├── museum
+    │   │           │   │   ├── ArticleService.java
+    │   │           │   │   ├── AuthorService.java
+    │   │           │   │   ├── EventService.java
+    │   │           │   │   ├── exceptions
+    │   │           │   │   │   ├── ArticleNotFoundException.java
+    │   │           │   │   │   ├── AuthorAlreadyExistException.java
+    │   │           │   │   │   ├── AuthorNotFoundException.java
+    │   │           │   │   │   └── EventNotFoundException.java
+    │   │           │   │   └── impl
+    │   │           │   │       ├── ArticleServiceImpl.java
+    │   │           │   │       ├── AuthorServiceImpl.java
+    │   │           │   │       └── EventServiceImpl.java
+    │   │           │   └── users
+    │   │           │       ├── exceptions
+    │   │           │       │   ├── UserAlreadyExistsException.java
+    │   │           │       │   └── UserNotFoundException.java
+    │   │           │       ├── impl
+    │   │           │       │   └── UserServiceImpl.java
+    │   │           │       └── UserService.java
+    │   │           └── web
+    │   │               ├── exceptionhandler
+    │   │               │   └── RestExceptionHandler.java
+    │   │               ├── museum
+    │   │               │   └── controllers
+    │   │               │       ├── ArticleController.java
+    │   │               │       ├── AuthorController.java
+    │   │               │       └── EventController.java
+    │   │               └── users
+    │   │                   └── UserController.java
+    │   └── resources
+    │       ├── application.yml
+    │       └── db
+    │           └── migration
+    │               ├── V1__initial_schema.sql
+    │               └── V2__fake_data.sql
+    └── test
+        ├── java
+        │   └── com
+        │       └── example
+        │           ├── config
+        │           │   ├── AbstractInstancioDomainTest.java
+        │           │   ├── AbstractInstancioTest.java
+        │           │   ├── AbstractRepositoryIntegrationTest.java
+        │           │   └── AbstractServiceIntegrationTest.java
+        │           ├── domain
+        │           │   ├── museum
+        │           │   │   ├── ArticleTest.java
+        │           │   │   ├── AuthorTest.java
+        │           │   │   └── EventTest.java
+        │           │   └── users
+        │           │       └── UserTest.java
+        │           ├── dto
+        │           │   ├── museum
+        │           │   │   ├── article
+        │           │   │   │   ├── ArticlePublishingFormTest.java
+        │           │   │   │   ├── ArticleWithContentTest.java
+        │           │   │   │   └── ArticleWithoutContentTest.java
+        │           │   │   ├── author
+        │           │   │   │   ├── AuthorRegistrationFormInstancioTest.java
+        │           │   │   │   └── AuthorShortResponseInstancioTest.java
+        │           │   │   └── event
+        │           │   │       └── EventPublishingFormTest.java
+        │           │   └── users
+        │           │       ├── UserRegistrationFormInstancioTest.java
+        │           │       └── UserResponseInstancioTest.java
+        │           ├── repositories
+        │           │   ├── museum
+        │           │   │   ├── ArticleRepositoryIntegrationTest.java
+        │           │   │   ├── AuthorRepositoryIntegrationTest.java
+        │           │   │   └── EventRepositoryIntegrationTest.java
+        │           │   └── users
+        │           │       └── UserRepositoryIntegrationTest.java
+        │           ├── services
+        │           │   ├── museum
+        │           │   │   └── impl
+        │           │   │       ├── ArticleServiceImplIntegrationTest.java
+        │           │   │       ├── AuthorServiceIntegrationTest.java
+        │           │   │       └── EventServiceImplIntegrationTest.java
+        │           │   └── users
+        │           │       └── impl
+        │           │           └── UserServiceIntegrationTest.java
+        │           └── web
+        │               ├── museum
+        │               │   └── controllers
+        │               │       ├── ArticleControllerTest.java
+        │               │       └── EventControllerTest.java
+        │               └── users
+        │                   └── UserControllerTest.java
+        └── resources
 
 ```
 
@@ -218,7 +185,7 @@ It is a back-end part of the abstract Museum Website and provides REST endpoints
 #### Main properties:
 
 - Language: Java-17
-- Build tool: Apache Maven (Multi-modular project structure)
+- Build tool: Apache Maven
 - Main framework: Spring Boot 3.1.2
 - CI: GitHub Actions
 - Deployment: Docker with Docker Compose plugin
@@ -284,7 +251,7 @@ docker compose up -d
 
 4. And the last:
 ```bash
-java -jar web/target/*.jar 
+java -jar target/*.jar 
 ```
 
 5. Open link in your browser: [swagger-ui](http://localhost:8080/swagger-ui/index.html)
