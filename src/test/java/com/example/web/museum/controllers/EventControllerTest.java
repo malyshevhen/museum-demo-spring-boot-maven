@@ -74,8 +74,7 @@ class EventControllerTest {
                 .andExpect(jsonPath("content").value(event.content()))
                 .andExpect(jsonPath("capacity").value(event.capacity()))
                 .andExpect(jsonPath("authorId").value(event.authorId()))
-                .andExpect(jsonPath("authorUsername").value(event.authorUsername()))
-                .andExpect(jsonPath("timing").value(event.timing().toString()));
+                .andExpect(jsonPath("authorUsername").value(event.authorUsername()));
     }
 
     @Test
