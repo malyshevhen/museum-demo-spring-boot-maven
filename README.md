@@ -239,19 +239,7 @@ __What do you need:__
 __Installation steps:__
 
 1. Clone this repository.
-
-2. Run another command:
-
-```bash
-./mvnw clean install
-```
-
-3. Run this command in your terminal (on Linux and Mac), Power-Shell or Git-bash (on Windows), but first of all move to the root of the project:  
-
-```bash
-docker compose up -d
-```
-
-5. Open link in your browser: [swagger-ui](http://localhost:8080/swagger-ui/index.html)
-
-6. Test endpoints with the Swagger UI 😀
+2. Run another command: `./mvnw clean install`
+3. Run this command in your terminal (on Linux and Mac), Power-Shell or Git-bash (on Windows), but first of all move to the root of the project: `docker compose up -d`
+4. Open link in your browser: [swagger-ui](http://localhost:8080/swagger-ui/index.html)
+5. Test endpoints with the Swagger UI 😀
