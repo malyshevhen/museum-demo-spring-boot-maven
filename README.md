@@ -1,16 +1,16 @@
 
-# Demo spring-boot maven-modular application
+# Demo spring-boot maven application
 
 ---
 
-### Description:
+## Description
 
 Java spring-boot application, written to level up knowledge of maven build tool, spring boot, and some libraries.
 It is a back-end part of the abstract Museum Website and provides REST endpoints with basic CRUD functionality.
 
 ---
 
-## App Architecture:
+## App Architecture
 
 > The project has basic 'onion' or three-layer architecture.
 
@@ -18,10 +18,10 @@ It is a back-end part of the abstract Museum Website and provides REST endpoints
 
 ---
 
-## Project structure:
+## Project structure
 
-```
-    														on 2023-08-18
+```bash
+                  on 2023-08-18
 .
 ├── docker-compose.yml
 ├── Dockerfile
@@ -180,9 +180,10 @@ It is a back-end part of the abstract Museum Website and provides REST endpoints
 ```
 
 ---
-## Features and technology stack:
 
-#### Main properties:
+## Features and technology stack
+
+### Main properties
 
 - Language: Java-17
 - Build tool: Apache Maven
@@ -190,41 +191,41 @@ It is a back-end part of the abstract Museum Website and provides REST endpoints
 - CI: GitHub Actions
 - Deployment: Docker with Docker Compose plugin
 
-#### WEB:
+#### WEB
 
 - [Spring Web](https://spring.io/projects/spring-framework).
-	- REST Controllers for endpoints
-	- RestControllerAdvice for exception handling
+  - REST Controllers for endpoints
+  - RestControllerAdvice for exception handling
 - Swagger ([Springdoc OpenAPI](https://springdoc.org/))
-	- Generating openAPI documentation
-	- Swagger Web UI by link: [swagger-ui](http://localhost:8080/swagger-ui/index.html)
+  - Generating openAPI documentation
+  - Swagger Web UI by link: [swagger-ui](http://localhost:8080/swagger-ui/index.html)
 - [Jackson databind](https://github.com/FasterXML/jackson-databind)
 
-#### Persistence:
+#### Persistence
 
 - [Spring Data JPA](https://spring.io/projects/spring-data-jpa)
-	- Hibernate as default ORM framework
-	- Records DTO projections for retrieving data 
-	- Transaction management by spring @Transactional
+  - Hibernate as default ORM framework
+  - Records DTO projections for retrieving data
+  - Transaction management by spring @Transactional
 - [Flyway](https://flywaydb.org/) SQL migration, for managing schemes versions
 - [PostgreSQL](https://www.postgresql.org/) as RDBMS
 
-#### Tests:
+#### Tests
 
 - [JUnit 5](https://junit.org/junit5/docs/current/user-guide/)
 - [Mockito](https://site.mockito.org/)
 - [Spring Boot Test](https://docs.spring.io/spring-boot/docs/current/api/org/springframework/boot/test/context/SpringBootTest.html)
-	- MockMVC for testing API cals
-	- SpringBootTest for integration testing
+  - MockMVC for testing API cals
+  - SpringBootTest for integration testing
 - [Testcontainers](https://testcontainers.com/guides/getting-started-with-testcontainers-for-java/) for integration testing
 - [Instancio](https://www.instancio.org/getting-started/) for generating fake test data
 
-#### Other:
+#### Other
 
 - [Lombok](https://projectlombok.org/features/)
 - Java Bean Validation ([Hibernate Validation](https://hibernate.org/validator/))
 
-### How you can try it:
+### How you can try it
 
 > Now the project is in development, and not everything should work perfectly fine 😊.  
 > But I fix all issues as soon as possible 😅.  
@@ -239,24 +240,18 @@ __Installation steps:__
 
 1. Clone this repository.
 
-3. Run this command in your terminal (on Linux and Mac), Power-Shell or Git-bash (on Windows), but first of all move to the root of the project:
-```bash
-docker compose up -d
-```
+2. Run another command:
 
-3. Run another command:
 ```bash
 ./mvnw clean install
 ```
 
-4. And the last:
+3. Run this command in your terminal (on Linux and Mac), Power-Shell or Git-bash (on Windows), but first of all move to the root of the project:  
+
 ```bash
-java -jar target/*.jar 
+docker compose up -d
 ```
 
 5. Open link in your browser: [swagger-ui](http://localhost:8080/swagger-ui/index.html)
 
 6. Test endpoints with the Swagger UI 😀
-
-> In the future I will change `docker-compose.yml` file, and steps 3 and 4 would be unnecessary. Image of the application would be pulled from GitHub packages 🚀 by docker-compose script.
-
